@@ -1,3 +1,6 @@
+package ejb;
+
+import entity.User;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;

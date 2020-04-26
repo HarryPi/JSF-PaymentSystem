@@ -1,3 +1,7 @@
+package jsf;
+
+import entity.User;
+import ejb.TestStore;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;

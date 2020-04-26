@@ -14,14 +14,14 @@ public class SystemUserGroup {
     private Long id;
 
     private String email;
-    private String groupName;
+    private String groupname;
 
     public SystemUserGroup() {
     }
 
-    public SystemUserGroup(String email, String groupName) {
+    public SystemUserGroup(String email, String groupname) {
         this.email = email;
-        this.groupName = groupName;
+        this.groupname = groupname;
     }
 
     public Long getId() {
@@ -40,12 +40,12 @@ public class SystemUserGroup {
         this.email = email;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getGroupname() {
+        return groupname;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
+    public void setGroupname(String groupName) {
+        this.groupname = groupName;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class SystemUserGroup {
         int hash = 7;
         hash = 47 * hash + Objects.hashCode(this.id);
         hash = 47 * hash + Objects.hashCode(this.email);
-        hash = 47 * hash + Objects.hashCode(this.groupName);
+        hash = 47 * hash + Objects.hashCode(this.groupname);
         return hash;
     }
 
@@ -72,7 +72,7 @@ public class SystemUserGroup {
         if (!Objects.equals(this.email, other.email)) {
             return false;
         }
-        if (!Objects.equals(this.groupName, other.groupName)) {
+        if (!Objects.equals(this.groupname, other.groupname)) {
             return false;
         }
         return true;

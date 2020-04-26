@@ -21,8 +21,18 @@
 
 				<p:outputLabel for="password" value="Password"/>
 				<p:inputText id="password" value="#{authentication.password}"/>
+
+				<p:outputLabel for="name" value="First Name"/>
+				<p:inputText id="name" value="#{authentication.name}"/>
+
+				<p:outputLabel for="lastName" value="Last Name"/>
+				<p:inputText id="lastName" value="#{authentication.lastName}"/>
+
+				<p:panelGrid columns="2">
+					<p:commandButton action="#{authentication.register}" value="Submit!"/>
+					<p:button type="reset" value="Clear"/>
+				</p:panelGrid>
 			</p:panelGrid>
-			<p:commandButton action="#{authentication.register()}" value="Submit!"/>
 		</h:form>
 	</div>
 

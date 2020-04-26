@@ -1,6 +1,7 @@
 package ejb;
 
 import entity.SystemUser;
+import entity.SystemUserGroup;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -15,12 +16,21 @@ public class UserAuthenticationServiceBean implements UserAuthenticationService 
     @PersistenceContext
     EntityManager entityManager;
 
+    @Override
     public void registerUser(String email, String password, String name, String lastName) {
         SystemUser user = new SystemUser(email, password, name, lastName);
+        SystemUserGroup userGroup = new SystemUserGroup(email, "users");
+
         entityManager.persist(user);
-        System.out.println(user.getEmail());
+        entityManager.persist(userGroup);
     }
 
+    /**
+     *
+     * @param email
+     * @param password
+     */
+    @Override
     public void loginUser(String email, String password) {
 
     }

@@ -14,13 +14,15 @@
 	<div class="ui-fluid">
 		<h3>Please register</h3>
 		<h:form>
-			<p:panelGrid columnClasses="ui-g-2 ui-g-2" columns="2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+			<p:panelGrid columnClasses="ui-g-2 ui-g-2" columns="2" layout="grid"
+						 styleClass="ui-panelgrid-blank ui-fluid">
 				<p:outputLabel for="email" value="Email"/>
-				<p:inputText id="email"/>
+				<p:inputText id="email" value="#{authentication.email}"/>
 
 				<p:outputLabel for="password" value="Password"/>
-				<p:inputText id="password"/>
+				<p:inputText id="password" value="#{authentication.password}"/>
 			</p:panelGrid>
+			<p:commandButton action="#{authentication.register()}" value="Submit!"/>
 		</h:form>
 	</div>
 

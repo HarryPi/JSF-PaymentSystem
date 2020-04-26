@@ -1,27 +1,26 @@
 package jsf;
 
-import entity.User;
-import ejb.TestStore;
+import ejb.UserAuthenticationService;
+
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import java.util.List;
 
 @Named("authentication")
 @RequestScoped
-public class Authentication {
+public class AuthBean {
     private String email;
     private String password;
 
     @EJB
-    TestStore store;
+    UserAuthenticationService store;
 
-    public Authentication() {
+    public AuthBean() {
     }
 
 
-    public String submit() {
-        store.addUser(email, password);
+    public String register() {
+        store.registerUser(email, password);
         return "/dummy/result";
     }
 
@@ -41,5 +40,4 @@ public class Authentication {
         this.password = password;
     }
 
-    public List<User> getUserList() { return store.getUserList(); }
 }

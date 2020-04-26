@@ -4,15 +4,19 @@ import ejb.UserAuthenticationService;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 @Named("authentication")
 @RequestScoped
 public class AuthBean {
-    private String email;
-    private String password;
+    private String username;
+    private String userpassword;
     private String name;
     private String lastName;
 
@@ -22,13 +26,31 @@ public class AuthBean {
     public AuthBean() {
     }
 
+    public String login() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + userpassword);
+        try {
+            //this method will actually check in the realm you configured in the web.xml file for the provided credentials
+            request.login(this.username, this.userpassword);
+            System.out.println("Success!");
+        } catch (ServletException e) {
+            context.addMessage(null, new FacesMessage("Login failed:" + e));
+            System.out.println("Error :(");
+            System.out.println(String.format("Error %s", e.toString()));
+            return "/index.xhtml";
+        }
+        System.out.println(request.getRequestURI());
+        return "/users/user.xhtml";
+    }
 
     public String register() {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(password.getBytes());
+            md.update(userpassword.getBytes(StandardCharsets.UTF_8));
             String hashedPassword = bytesToHex(md.digest());
-            store.registerUser(email, hashedPassword, name, lastName);
+            store.registerUser(username, hashedPassword, name, lastName);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -36,20 +58,20 @@ public class AuthBean {
         return "/dummy/result";
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserpassword() {
+        return userpassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUserpassword(String userpassword) {
+        this.userpassword = userpassword;
     }
 
     public String getName() {

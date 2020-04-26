@@ -13,14 +13,14 @@ public class SystemUserGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
+    private String username;
     private String groupname;
 
     public SystemUserGroup() {
     }
 
-    public SystemUserGroup(String email, String groupname) {
-        this.email = email;
+    public SystemUserGroup(String username, String groupname) {
+        this.username = username;
         this.groupname = groupname;
     }
 
@@ -32,12 +32,12 @@ public class SystemUserGroup {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String email) {
+        this.username = email;
     }
 
     public String getGroupname() {
@@ -52,7 +52,7 @@ public class SystemUserGroup {
     public int hashCode() {
         int hash = 7;
         hash = 47 * hash + Objects.hashCode(this.id);
-        hash = 47 * hash + Objects.hashCode(this.email);
+        hash = 47 * hash + Objects.hashCode(this.username);
         hash = 47 * hash + Objects.hashCode(this.groupname);
         return hash;
     }
@@ -69,7 +69,7 @@ public class SystemUserGroup {
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.email, other.email)) {
+        if (!Objects.equals(this.username, other.username)) {
             return false;
         }
         if (!Objects.equals(this.groupname, other.groupname)) {

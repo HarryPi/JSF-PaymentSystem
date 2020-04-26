@@ -15,10 +15,10 @@ public class SystemUser {
     private Long id;
 
     @NotNull
-    String email;
+    String username;
 
     @NotNull
-    String password;
+    String userpassword;
 
     @NotNull
     String name;
@@ -31,14 +31,14 @@ public class SystemUser {
 
     /**
      *
-     * @param email User email
-     * @param password User password
+     * @param username User email
+     * @param userpassword User password
      * @param name Users name
      * @param surname Users last name
      */
-    public SystemUser(String email, String password, String name, String surname) {
-        this.email = email;
-        this.password = password;
+    public SystemUser(String username, String userpassword, String name, String surname) {
+        this.username = username;
+        this.userpassword = userpassword;
         this.name = name;
         this.surname = surname;
     }
@@ -51,20 +51,20 @@ public class SystemUser {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String username) {
-        this.email = username;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserpassword() {
+        return userpassword;
     }
 
-    public void setPassword(String userpassword) {
-        this.password = userpassword;
+    public void setUserpassword(String userpassword) {
+        this.userpassword = userpassword;
     }
 
     public String getName() {
@@ -87,8 +87,8 @@ public class SystemUser {
     public int hashCode() {
         int hash = 5;
         hash = 97 * hash + Objects.hashCode(this.id);
-        hash = 97 * hash + Objects.hashCode(this.email);
-        hash = 97 * hash + Objects.hashCode(this.password);
+        hash = 97 * hash + Objects.hashCode(this.username);
+        hash = 97 * hash + Objects.hashCode(this.userpassword);
         hash = 97 * hash + Objects.hashCode(this.name);
         hash = 97 * hash + Objects.hashCode(this.surname);
         return hash;
@@ -106,10 +106,10 @@ public class SystemUser {
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.email, other.email)) {
+        if (!Objects.equals(this.username, other.username)) {
             return false;
         }
-        if (!Objects.equals(this.password, other.password)) {
+        if (!Objects.equals(this.userpassword, other.userpassword)) {
             return false;
         }
         if (!Objects.equals(this.name, other.name)) {

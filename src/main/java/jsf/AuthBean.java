@@ -2,6 +2,7 @@ package jsf;
 
 import ejb.CurrencyService;
 import ejb.UserAuthenticationService;
+import entity.Account;
 import entity.Currency;
 import entity.SystemUser;
 
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Named("authentication")
@@ -84,10 +86,11 @@ public class AuthBean {
 
     public String register() {
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(userpassword.getBytes(StandardCharsets.UTF_8));
-            String hashedPassword = bytesToHex(md.digest());
-            SystemUser user = new SystemUser(username, hashedPassword, name, lastName, 1000, currency);
+            String hashedPassword = this.encodePassword(); // Get encoded password
+
+            // Get currency and convert if necessary
+            // todo: Convert currency
+            SystemUser user = new SystemUser(username, hashedPassword, name, lastName, null);
             store.registerUser(user);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -142,6 +145,12 @@ public class AuthBean {
 
     public void setCurrencies(List<Currency> currencies) {
         this.currencies = currencies;
+    }
+
+    private String encodePassword() throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(userpassword.getBytes(StandardCharsets.UTF_8));
+        return bytesToHex(md.digest());
     }
 
     /**

@@ -37,7 +37,12 @@ public class Transaction implements Serializable {
     public Transaction() {
     }
 
-    public Transaction(@NotNull int amount, @NotNull TransactionStatus status, @NotNull Account transactionOwner, @NotNull Account transactionParticipant) {
+    public Transaction(
+            @NotNull int amount,
+            @NotNull TransactionStatus status,
+            @NotNull Account transactionOwner,
+            @NotNull Account transactionParticipant
+    ) {
         this.amount = amount;
         this.status = status;
         this.transactionOwner = transactionOwner;

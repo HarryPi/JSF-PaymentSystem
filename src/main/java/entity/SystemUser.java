@@ -1,5 +1,7 @@
 package entity;
 
+import com.sun.istack.internal.Nullable;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
@@ -23,27 +25,37 @@ public class SystemUser {
     @NotNull
     private String surname;
 
-    @NotNull
-    private String currency;
-
-    @NotNull
+    @Nullable
     @OneToOne
-    Account account;
+    private Account account;
 
+    /**
+     * The User of the system
+     */
     public SystemUser() {
     }
 
+    /**
+     * The user of the system
+     *
+     * @param username     The user email
+     * @param userpassword Password
+     * @param name         Users first name
+     * @param surname      Users last name
+     * @param account      Users active {@link Account} only one can exist
+     */
     public SystemUser(
             @NotNull String username,
             @NotNull String userpassword,
             @NotNull String name,
             @NotNull String surname,
-            @NotNull String currency) {
+            Account account
+    ) {
         this.username = username;
         this.userpassword = userpassword;
         this.name = name;
         this.surname = surname;
-        this.currency = currency;
+        this.account = account;
     }
 
     public Long getId() {
@@ -84,6 +96,14 @@ public class SystemUser {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     @Override

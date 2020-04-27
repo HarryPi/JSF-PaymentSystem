@@ -1,5 +1,6 @@
 package ejb;
 
+import entity.Account;
 import entity.SystemUser;
 import entity.SystemUserGroup;
 
@@ -8,6 +9,7 @@ import javax.annotation.PreDestroy;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 @Stateless
 public class UserAuthenticationServiceBean implements UserAuthenticationService {
@@ -16,15 +18,19 @@ public class UserAuthenticationServiceBean implements UserAuthenticationService 
     EntityManager entityManager;
 
     @Override
-    public void registerUser(SystemUser user) {
+    @Transactional(Transactional.TxType.REQUIRED)
+    public void registerUser(SystemUser user, String selectedCurrency) {
         SystemUserGroup userGroup = new SystemUserGroup(user.getUsername(), "users");
+        Account account = new Account(1000, selectedCurrency, user, null);
+
         System.out.println("Registering...");
+
         entityManager.persist(user);
         entityManager.persist(userGroup);
+        entityManager.persist(account);
     }
 
     /**
-     *
      * @param email
      * @param password
      */

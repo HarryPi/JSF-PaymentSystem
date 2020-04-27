@@ -1,33 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-<h:head>
+<ui:composition template="/WEB-INF/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:define name="content">
+        <h3>Please log in</h3>
+        <h:form>
+            <div class="ui-fluid">
 
-</h:head>
-<h:body>
-    <h:outputStylesheet name="css/primeflex.css"/>
-    <h3>Please log in</h3>
-    <h:form>
-        <div class="ui-fluid">
+                <p:panelGrid columnClasses="ui-g-2 ui-g-2" columns="2" layout="grid"
+                             styleClass="ui-panelgrid-blank ui-fluid">
+                    <p:outputLabel for="email" value="Email"/>
+                    <p:inputText id="email" value="#{authentication.username}"/>
 
-            <p:panelGrid columnClasses="ui-g-2 ui-g-2" columns="2" layout="grid"
-                         styleClass="ui-panelgrid-blank ui-fluid">
-                <p:outputLabel for="email" value="Email"/>
-                <p:inputText id="email" value="#{authentication.username}"/>
+                    <p:outputLabel for="password" value="Password"/>
+                    <p:inputText id="password" value="#{authentication.userpassword}"/>
 
-                <p:outputLabel for="password" value="Password"/>
-                <p:inputText id="password" value="#{authentication.userpassword}"/>
+                    <p:commandButton ajax="false" action="#{authentication.login}" value="Submit!"/>
+                </p:panelGrid>
+            </div>
 
-                <p:commandButton ajax="false" action="#{authentication.login}" value="Submit!"/>
-            </p:panelGrid>
-        </div>
-
-    </h:form>
-
-</h:body>
-</html>
+        </h:form>
+    </ui:define>
+</ui:composition>

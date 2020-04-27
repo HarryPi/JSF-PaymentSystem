@@ -26,6 +26,9 @@ public class SystemUser {
     @NotNull
     String surname;
 
+    @NotNull
+    int balance;
+
     public SystemUser() {
     }
 

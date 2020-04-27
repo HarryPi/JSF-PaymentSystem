@@ -22,7 +22,11 @@
 	<welcome-file-list>
 		<welcome-file>faces/index.xhtml</welcome-file>
 	</welcome-file-list>
-
+	<!--Primefaces-->
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>luna-blue</param-value>
+	</context-param>
 	<!--Security-->
 	<!--Roles-->
 	<security-role>

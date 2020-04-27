@@ -31,12 +31,18 @@ public class AuthBean {
     }
 
     public void checkIfAuthenticated() throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-        String username = context.getExternalContext().getRemoteUser();
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            String username = context.getExternalContext().getRemoteUser();
 
-        if (!username.isEmpty()) {
+            // check if we have a user loaded
             // Redirect
-            System.out.println("I am not empty!");
+            if (!username.isEmpty()) {
+                System.out.println("I am not empty!");
+            }
+
+        } catch (Exception e) {
+            // Our user is not logged or register thus ignore and leave at index
         }
     }
 
@@ -106,6 +112,7 @@ public class AuthBean {
 
     /**
      * Turn bytes into hashed string
+     *
      * @param bytes
      * @return
      */

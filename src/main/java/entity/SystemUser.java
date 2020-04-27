@@ -12,22 +12,23 @@ public class SystemUser {
     private Long id;
 
     @NotNull
-    String username;
+    private String username;
 
     @NotNull
-    String userpassword;
+    private String userpassword;
 
     @NotNull
-    String name;
+    private String name;
 
     @NotNull
-    String surname;
+    private String surname;
 
     @NotNull
-    int balance;
+    private String currency;
 
     @NotNull
-    String currency;
+    @OneToOne
+    Account account;
 
     public SystemUser() {
     }
@@ -37,13 +38,11 @@ public class SystemUser {
             @NotNull String userpassword,
             @NotNull String name,
             @NotNull String surname,
-            @NotNull int balance,
             @NotNull String currency) {
         this.username = username;
         this.userpassword = userpassword;
         this.name = name;
         this.surname = surname;
-        this.balance = balance;
         this.currency = currency;
     }
 

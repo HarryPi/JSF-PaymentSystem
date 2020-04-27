@@ -18,7 +18,7 @@ public class UserAuthenticationServiceBean implements UserAuthenticationService 
     @Override
     public void registerUser(SystemUser user) {
         SystemUserGroup userGroup = new SystemUserGroup(user.getUsername(), "users");
-
+        System.out.println("Registering...");
         entityManager.persist(user);
         entityManager.persist(userGroup);
     }

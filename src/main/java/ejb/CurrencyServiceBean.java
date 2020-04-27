@@ -26,4 +26,16 @@ public class CurrencyServiceBean implements CurrencyService {
     public List<Currency> getCurrencies() {
         return this.currencies;
     }
+
+    @Override
+    public Currency get(String currencyType) {
+        switch (currencyType) {
+            case Currency.euros:
+                return this.currencies.get(2);
+            case Currency.usDollars:
+                return this.currencies.get(1);
+            default:
+                return this.currencies.get(0);
+        }
+    }
 }

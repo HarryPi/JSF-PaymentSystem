@@ -34,7 +34,7 @@
                         </f:facet>
                     </p:selectOneMenu>
                     <p:panelGrid columns="2">
-                        <p:commandButton action="#{authentication.register}" value="Submit!"/>
+                        <p:commandButton ajax="false" action="#{authentication.register}" value="Submit!"/>
                         <p:commandButton update="registerPanel" process="@this" value="Clear">
                             <p:resetInput target="registerPanel"/>
                         </p:commandButton>

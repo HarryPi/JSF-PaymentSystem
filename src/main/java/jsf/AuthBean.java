@@ -26,8 +26,8 @@ public class AuthBean {
     private String userpassword;
     private String name;
     private String lastName;
+    private String currency;
 
-    private Currency currency;
     private List<Currency> currencies;
 
     @Inject
@@ -42,6 +42,9 @@ public class AuthBean {
     @PostConstruct
     public void init() {
         currencies = currencyService.getCurrencies();
+
+        // Set default currency to pounds
+        currency = Currency.gbPounds;
     }
 
     public void checkIfAuthenticated() throws IOException {
@@ -84,13 +87,13 @@ public class AuthBean {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             md.update(userpassword.getBytes(StandardCharsets.UTF_8));
             String hashedPassword = bytesToHex(md.digest());
-            SystemUser user = new SystemUser(username, hashedPassword, name, lastName, 1000, currency.getCurrencyType());
+            SystemUser user = new SystemUser(username, hashedPassword, name, lastName, 1000, currency);
             store.registerUser(user);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
 
-        return "/dummy/result";
+        return "/users/user.xhtml?faces-redirect=true";
     }
 
     public String getUsername() {
@@ -125,11 +128,11 @@ public class AuthBean {
         this.lastName = lastName;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 

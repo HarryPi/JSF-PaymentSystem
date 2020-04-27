@@ -5,12 +5,16 @@ import ejb.UserAuthenticationService;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.ExternalContextFactory;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.Principal;
 
 @Named("authentication")
 @RequestScoped
@@ -24,6 +28,16 @@ public class AuthBean {
     UserAuthenticationService store;
 
     public AuthBean() {
+    }
+
+    public void checkIfAuthenticated() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        String username = context.getExternalContext().getRemoteUser();
+
+        if (!username.isEmpty()) {
+            // Redirect
+            System.out.println("I am not empty!");
+        }
     }
 
     public String login() {
@@ -42,7 +56,7 @@ public class AuthBean {
             return "/index.xhtml";
         }
         System.out.println(request.getRequestURI());
-        return "/users/user.xhtml";
+        return "/users/user.xhtml?faces-redirect=true";
     }
 
     public String register() {

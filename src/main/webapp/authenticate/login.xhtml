@@ -23,7 +23,7 @@
                 <p:outputLabel for="password" value="Password"/>
                 <p:inputText id="password" value="#{authentication.userpassword}"/>
 
-                <p:commandButton action="#{authentication.login}" value="Submit!"/>
+                <p:commandButton ajax="false" action="#{authentication.login}" value="Submit!"/>
             </p:panelGrid>
         </div>
 

@@ -91,7 +91,7 @@ public class AuthBean {
             // Get currency and convert if necessary
             // todo: Convert currency
             SystemUser user = new SystemUser(username, hashedPassword, name, lastName, null);
-            store.registerUser(user);
+            store.registerUser(user, currency);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

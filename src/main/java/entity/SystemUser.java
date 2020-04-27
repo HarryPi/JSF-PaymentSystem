@@ -1,6 +1,5 @@
 package entity;
 
-import com.sun.istack.internal.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,7 +24,6 @@ public class SystemUser {
     @NotNull
     private String surname;
 
-    @Nullable
     @OneToOne
     private Account account;
 

@@ -1,6 +1,5 @@
 package entity;
 
-import com.sun.istack.internal.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -23,7 +22,6 @@ public class Account {
     @OneToOne
     private SystemUser systemUser;
 
-    @Nullable
     @OneToMany
     private List<Transaction> transactions;
 

@@ -1,5 +1,6 @@
 package entity;
 
+
 import ejb.TransactionStatus;
 
 import javax.persistence.*;

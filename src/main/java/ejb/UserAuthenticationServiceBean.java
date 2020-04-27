@@ -22,7 +22,7 @@ public class UserAuthenticationServiceBean implements UserAuthenticationService 
     public void registerUser(SystemUser user, String selectedCurrency) {
         SystemUserGroup userGroup = new SystemUserGroup(user.getUsername(), "users");
         Account account = new Account(1000, selectedCurrency, user, null);
-
+        user.setAccount(account);
         System.out.println("Registering...");
 
         entityManager.persist(user);

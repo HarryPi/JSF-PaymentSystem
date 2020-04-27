@@ -8,7 +8,6 @@ import javax.annotation.PreDestroy;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
 
 @Stateless
 public class UserAuthenticationServiceBean implements UserAuthenticationService {
@@ -17,9 +16,8 @@ public class UserAuthenticationServiceBean implements UserAuthenticationService 
     EntityManager entityManager;
 
     @Override
-    public void registerUser(String email, String password, String name, String lastName) {
-        SystemUser user = new SystemUser(email, password, name, lastName);
-        SystemUserGroup userGroup = new SystemUserGroup(email, "users");
+    public void registerUser(SystemUser user) {
+        SystemUserGroup userGroup = new SystemUserGroup(user.getUsername(), "users");
 
         entityManager.persist(user);
         entityManager.persist(userGroup);

@@ -1,9 +1,6 @@
 package entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
@@ -29,21 +26,25 @@ public class SystemUser {
     @NotNull
     int balance;
 
+    @NotNull
+    String currency;
+
     public SystemUser() {
     }
 
-    /**
-     *
-     * @param username User email
-     * @param userpassword User password
-     * @param name Users name
-     * @param surname Users last name
-     */
-    public SystemUser(String username, String userpassword, String name, String surname) {
+    public SystemUser(
+            @NotNull String username,
+            @NotNull String userpassword,
+            @NotNull String name,
+            @NotNull String surname,
+            @NotNull int balance,
+            @NotNull String currency) {
         this.username = username;
         this.userpassword = userpassword;
         this.name = name;
         this.surname = surname;
+        this.balance = balance;
+        this.currency = currency;
     }
 
     public Long getId() {

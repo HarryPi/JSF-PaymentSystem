@@ -1,20 +1,23 @@
 package jsf;
 
+import ejb.CurrencyService;
 import ejb.UserAuthenticationService;
+import entity.Currency;
+import entity.SystemUser;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.ExternalContextFactory;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.security.Principal;
+import java.util.List;
 
 @Named("authentication")
 @RequestScoped
@@ -24,10 +27,21 @@ public class AuthBean {
     private String name;
     private String lastName;
 
+    private Currency currency;
+    private List<Currency> currencies;
+
+    @Inject
+    private CurrencyService currencyService;
+
     @EJB
     UserAuthenticationService store;
 
     public AuthBean() {
+    }
+
+    @PostConstruct
+    public void init() {
+        currencies = currencyService.getCurrencies();
     }
 
     public void checkIfAuthenticated() throws IOException {
@@ -70,7 +84,8 @@ public class AuthBean {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             md.update(userpassword.getBytes(StandardCharsets.UTF_8));
             String hashedPassword = bytesToHex(md.digest());
-            store.registerUser(username, hashedPassword, name, lastName);
+            SystemUser user = new SystemUser(username, hashedPassword, name, lastName, 1000, currency.getCurrencyType());
+            store.registerUser(user);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -108,6 +123,22 @@ public class AuthBean {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
+    public List<Currency> getCurrencies() {
+        return currencies;
+    }
+
+    public void setCurrencies(List<Currency> currencies) {
+        this.currencies = currencies;
     }
 
     /**

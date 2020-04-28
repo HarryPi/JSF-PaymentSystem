@@ -49,7 +49,6 @@ public class TransactionViewerBean {
             email = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
         }
         this.systemTransactions = transactionService.getAllTransactionsForUser(email);
-        layout.setLoading(false);
     }
 
 }

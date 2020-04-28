@@ -8,6 +8,7 @@ public class Currency {
     private int id;
     private String currencyType;
     private String displayName;
+    private String displaySymbol;
 
     public Currency() {
     }
@@ -16,6 +17,21 @@ public class Currency {
         this.id = id;
         this.currencyType = currencyType;
         this.displayName = displayName;
+    }
+
+    public Currency(int id, String currencyType, String displayName, String displaySymbol) {
+        this.id = id;
+        this.currencyType = currencyType;
+        this.displayName = displayName;
+        this.displaySymbol = displaySymbol;
+    }
+
+    public String getDisplaySymbol() {
+        return displaySymbol;
+    }
+
+    public void setDisplaySymbol(String displaySymbol) {
+        this.displaySymbol = displaySymbol;
     }
 
     public int getId() {

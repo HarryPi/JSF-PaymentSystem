@@ -17,9 +17,9 @@ public class CurrencyServiceBean implements CurrencyService {
     @PostConstruct
     public void init() {
         currencies = new ArrayList<>();
-        currencies.add(new Currency(0, Currency.gbPounds, "GB Pounds (£)"));
-        currencies.add(new Currency(1, Currency.usDollars, "US Dollars ($)"));
-        currencies.add(new Currency(2, Currency.euros, "Euros (€)"));
+        currencies.add(new Currency(0, Currency.gbPounds, "GB Pounds (£)", "£"));
+        currencies.add(new Currency(1, Currency.usDollars, "US Dollars ($)", "$"));
+        currencies.add(new Currency(2, Currency.euros, "Euros (€)", "€"));
     }
 
     @Override

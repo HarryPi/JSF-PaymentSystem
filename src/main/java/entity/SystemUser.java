@@ -12,8 +12,8 @@ import java.util.Objects;
                 query = "select s from SystemUser s where s.username = :email"
         ),
         @NamedQuery(
-                name = "getAllUsersExceptSelf",
-                query = "select s from SystemUser s where s.username <> :email"
+                name = "getAllUsers",
+                query = "select s from SystemUser s"
         )
 })
 @Entity

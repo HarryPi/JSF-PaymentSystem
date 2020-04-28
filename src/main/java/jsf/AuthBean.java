@@ -61,26 +61,19 @@ public class AuthBean implements Serializable {
             }
 
         } catch (Exception e) {
-            // Our user is not logged or register thus ignore and leave at index
+            // Our user is not logged or register thus ignore and leave at login
         }
     }
 
     public String login() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + userpassword);
         try {
-            //this method will actually check in the realm you configured in the web.xml file for the provided credentials
-            request.login(this.username, this.userpassword);
+            this.loginToServer(this.username, this.userpassword);
             System.out.println("Success!");
         } catch (ServletException e) {
-            context.addMessage(null, new FacesMessage("Login failed:" + e));
             System.out.println("Error :(");
             System.out.println(String.format("Error %s", e.toString()));
             return "/index.xhtml";
         }
-        System.out.println(request.getRequestURI());
         return "/users/transactions.xhtml?faces-redirect=true";
     }
 
@@ -92,6 +85,8 @@ public class AuthBean implements Serializable {
             // todo: Convert currency
             SystemUser user = new SystemUser(username, hashedPassword, name, lastName, null);
             store.registerUser(user, currency);
+            this.loginToServer(this.username, this.userpassword);
+
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -163,5 +158,11 @@ public class AuthBean implements Serializable {
         StringBuffer result = new StringBuffer();
         for (byte b : bytes) result.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
         return result.toString();
+    }
+
+    private void loginToServer(String username, String password) throws ServletException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        request.login(username, password);
     }
 }

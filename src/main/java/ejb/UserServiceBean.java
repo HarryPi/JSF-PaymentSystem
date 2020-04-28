@@ -7,6 +7,7 @@ import entity.SystemUserGroup;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Stateless;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -18,6 +19,14 @@ public class UserServiceBean implements UserService {
     @PersistenceContext
     EntityManager entityManager;
 
+
+    public SystemUser getCurrentUser() {
+        String username = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
+
+        return entityManager.createNamedQuery("getUserByUsername", SystemUser.class)
+                .setParameter("email", username)
+                .getSingleResult();
+    }
 
     /**
      * Registers a new user. A new user will always be acociated with a new account and a group
@@ -51,15 +60,14 @@ public class UserServiceBean implements UserService {
     }
 
     /**
-     * Gets all the users except the specified user
-     * @param selfUsername The user to not return
-     * @return A List of users except the user defined as self
+     * Gets all the registered users
+     *
+     * @return A List of {@link SystemUser}
      */
     @Override
-    public List<SystemUser> getAllUsersExceptSelf(String selfUsername) {
+    public List<SystemUser> getAllUsers() {
         return entityManager
-                .createNamedQuery("getAllUsersExceptSelf", SystemUser.class)
-                .setParameter("email", selfUsername)
+                .createNamedQuery("getAllUsers", SystemUser.class)
                 .getResultList();
     }
 

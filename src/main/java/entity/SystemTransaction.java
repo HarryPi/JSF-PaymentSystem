@@ -9,10 +9,10 @@ import java.io.Serializable;
 
 @NamedQuery(
         name = "getAllTransactionsWithUserId",
-        query = "select t from SystemTransactions t where t.transactionOwner.id = :userId"
+        query = "select t from SystemTransaction t where t.transactionOwner.id = :userId"
 )
 @Entity
-public class SystemTransactions implements Serializable {
+public class SystemTransaction implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,10 +38,10 @@ public class SystemTransactions implements Serializable {
     @NotNull
     private String transactionParticipantId;
 
-    public SystemTransactions() {
+    public SystemTransaction() {
     }
 
-    public SystemTransactions(@NotNull int amount, @NotNull TransactionStatus status, @NotNull SystemUser transactionOwner, @NotNull String transactionParticipantId) {
+    public SystemTransaction(@NotNull int amount, @NotNull TransactionStatus status, @NotNull SystemUser transactionOwner, @NotNull String transactionParticipantId) {
         this.amount = amount;
         this.status = status;
         this.transactionOwner = transactionOwner;

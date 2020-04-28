@@ -1,5 +1,6 @@
 package ejb;
 
+import dao.SystemUserGroup.SystemUserGroupDao;
 import dao.systemuser.SystemUserDao;
 import entity.Account;
 import entity.SystemUser;
@@ -20,6 +21,9 @@ public class UserServiceBean implements UserService {
 
     @EJB(name = "SystemUserDao")
     private SystemUserDao userDao;
+
+    @EJB
+    private SystemUserGroupDao userGroupDao;
 
     @PersistenceContext
     EntityManager entityManager;
@@ -47,10 +51,8 @@ public class UserServiceBean implements UserService {
 
         System.out.println("Registering...");
 
-        userDao.persist(user);
-        entityManager.persist(userGroup);
-        entityManager.persist(account);
-
+        userDao.persist(user); // No need to persist account as it is already attached to user
+        userGroupDao.persist(userGroup);
     }
 
     /**

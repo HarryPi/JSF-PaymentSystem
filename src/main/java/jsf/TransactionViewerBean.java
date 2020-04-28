@@ -1,7 +1,7 @@
 package jsf;
 
 import ejb.TransactionService;
-import entity.SystemTransactions;
+import entity.SystemTransaction;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequestScoped
 public class TransactionViewerBean {
 
-    private List<SystemTransactions> systemTransactions;
+    private List<SystemTransaction> systemTransactions;
 
     @EJB
     TransactionService transactionService;
@@ -26,11 +26,11 @@ public class TransactionViewerBean {
 
     }
 
-    public List<SystemTransactions> getSystemTransactions() {
+    public List<SystemTransaction> getSystemTransactions() {
         return systemTransactions;
     }
 
-    public void setSystemTransactions(List<SystemTransactions> systemTransactions) {
+    public void setSystemTransactions(List<SystemTransaction> systemTransactions) {
         this.systemTransactions = systemTransactions;
     }
 

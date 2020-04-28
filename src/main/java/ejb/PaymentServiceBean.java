@@ -1,8 +1,10 @@
 package ejb;
 
+import dao.systemuser.SystemUserDao;
 import entity.Account;
 import entity.SystemUser;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,8 +13,8 @@ import javax.transaction.Transactional;
 @Stateless
 public class PaymentServiceBean implements PaymentService {
 
-    @PersistenceContext
-    EntityManager entityManager;
+    @EJB
+    SystemUserDao userDao;
 
     public PaymentServiceBean() {
     }
@@ -20,15 +22,11 @@ public class PaymentServiceBean implements PaymentService {
     @Override
     @Transactional(Transactional.TxType.REQUIRED)
     public void pay(String from, String to, int amount) {
-        SystemUser userFrom = entityManager.createNamedQuery("getUserByUsername", SystemUser.class)
-                .setParameter("email", from)
-                .getSingleResult();
+        SystemUser userFrom = userDao.getUserByEmail(from);
 
         userFrom.getAccount().setBalance(userFrom.getAccount().getBalance() - amount);
 
-        SystemUser userTo = entityManager.createNamedQuery("getUserByUsername", SystemUser.class)
-                .setParameter("email", to)
-                .getSingleResult();
+        SystemUser userTo = userDao.getUserByEmail(to);
 
         userTo.getAccount().setBalance(userTo.getAccount().getBalance() - amount);
 

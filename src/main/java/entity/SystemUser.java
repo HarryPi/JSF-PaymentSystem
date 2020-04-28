@@ -45,7 +45,7 @@ public class SystemUser {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<SystemTransactions> systemTransactions;
+    private List<SystemTransaction> systemTransactions;
 
     /**
      * The User of the system

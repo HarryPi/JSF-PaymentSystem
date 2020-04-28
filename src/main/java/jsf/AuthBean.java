@@ -9,6 +9,7 @@ import entity.SystemUser;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -16,14 +17,15 @@ import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Named("authentication")
-@RequestScoped
-public class AuthBean {
+@SessionScoped
+public class AuthBean implements Serializable {
     private String username;
     private String userpassword;
     private String name;
@@ -57,7 +59,7 @@ public class AuthBean {
             // check if we have a user loaded
             // Redirect
             if (!username.isEmpty()) {
-                System.out.println("I am not empty!");
+                context.getExternalContext().redirect("/webapps2020/faces/users/user.xhtml?faces-redirect=true");
             }
 
         } catch (Exception e) {

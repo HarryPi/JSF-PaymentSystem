@@ -9,6 +9,10 @@
         <f:viewParam name="checkIfAuthenticated"/>
         <f:event type="preRenderView" listener="#{authentication.checkIfAuthenticated}"/>
     </f:metadata>
+    <f:metadata>
+        <f:viewParam name="ensureSidebarInvisible"/>
+        <f:event type="preRenderView" listener="#{layout.ensureSidebarHidden}"/>
+    </f:metadata>
 
     <ui:define name="content">
         <div class="card">

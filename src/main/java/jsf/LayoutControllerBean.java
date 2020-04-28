@@ -1,7 +1,6 @@
 package jsf;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Named;
 
 @Named(value = "layout")
@@ -12,8 +11,14 @@ public class LayoutControllerBean {
     public LayoutControllerBean() {
     }
 
+
     public void showSidebar() {
         this.setShouldShowSidebar(true);
+    }
+
+
+    public void ensureSidebarHidden() {
+        this.setShouldShowSidebar(false);
     }
 
     public boolean isShouldShowSidebar() {

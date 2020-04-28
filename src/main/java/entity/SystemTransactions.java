@@ -7,8 +7,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+@NamedQuery(
+        name = "getAllTransactionsWithUserId",
+        query = "select t from SystemTransactions t where t.transactionOwner.id = :userId"
+)
 @Entity
-public class Transaction implements Serializable {
+public class SystemTransactions implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,28 +30,30 @@ public class Transaction implements Serializable {
     /**
      * The account that owns this transaction (i.e the instigator)
      */
-    private Account transactionOwner;
+    private SystemUser transactionOwner;
 
     /**
      * The other participant of this transaction that either receives or sends money from the transaction owner
      */
     @NotNull
-    @ManyToOne
-    private Account transactionParticipant;
+    private String transactionParticipantId;
 
-    public Transaction() {
+    public SystemTransactions() {
     }
 
-    public Transaction(
-            @NotNull int amount,
-            @NotNull TransactionStatus status,
-            @NotNull Account transactionOwner,
-            @NotNull Account transactionParticipant
-    ) {
+    public SystemTransactions(@NotNull int amount, @NotNull TransactionStatus status, @NotNull SystemUser transactionOwner, @NotNull String transactionParticipantId) {
         this.amount = amount;
         this.status = status;
         this.transactionOwner = transactionOwner;
-        this.transactionParticipant = transactionParticipant;
+        this.transactionParticipantId = transactionParticipantId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getAmount() {
@@ -66,27 +72,19 @@ public class Transaction implements Serializable {
         this.status = status;
     }
 
-    public Account getTransactionOwner() {
+    public SystemUser getTransactionOwner() {
         return transactionOwner;
     }
 
-    public void setTransactionOwner(Account transactionOwner) {
+    public void setTransactionOwner(SystemUser transactionOwner) {
         this.transactionOwner = transactionOwner;
     }
 
-    public Account getTransactionParticipant() {
-        return transactionParticipant;
+    public String getTransactionParticipantId() {
+        return transactionParticipantId;
     }
 
-    public void setTransactionParticipant(Account transactionParticipant) {
-        this.transactionParticipant = transactionParticipant;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
+    public void setTransactionParticipantId(String transactionParticipantId) {
+        this.transactionParticipantId = transactionParticipantId;
     }
 }

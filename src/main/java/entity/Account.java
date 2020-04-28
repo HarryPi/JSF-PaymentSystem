@@ -22,30 +22,23 @@ public class Account {
     @OneToOne
     private SystemUser systemUser;
 
-    @OneToMany
-    private List<Transaction> transactions;
-
     public Account() {
     }
 
+
     /**
      * Users account
-     * @param balance Remaining balance
-     * @param currency Selected currency for account see {@link Currency}
+     *
+     * @param balance    Remaining balance
+     * @param currency   Selected currency for account see {@link Currency}
      * @param systemUser The associated {@link SystemUser}
-     * @param transactions All  {@link Transaction} that this account has taken either received or sent
      */
-    public Account(
-            @NotNull int balance,
-            @NotNull String currency,
-            @NotNull SystemUser systemUser,
-            List<Transaction> transactions
-    ) {
+    public Account(@NotNull int balance, @NotNull String currency, @NotNull SystemUser systemUser) {
         this.balance = balance;
         this.currency = currency;
         this.systemUser = systemUser;
-        this.transactions = transactions;
     }
+
 
     public Long getId() {
         return id;
@@ -77,13 +70,5 @@ public class Account {
 
     public void setSystemUser(SystemUser systemUser) {
         this.systemUser = systemUser;
-    }
-
-    public List<Transaction> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
     }
 }

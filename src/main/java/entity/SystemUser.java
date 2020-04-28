@@ -3,8 +3,15 @@ package entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Objects;
 
+@NamedQueries({
+        @NamedQuery(
+                name = "getUserByUsername",
+                query = "select s from SystemUser s where s.username = :email"
+        )
+})
 @Entity
 public class SystemUser {
 
@@ -24,8 +31,17 @@ public class SystemUser {
     @NotNull
     private String surname;
 
-    @OneToOne
+    @OneToOne(mappedBy = "systemUser",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private Account account;
+
+    @OneToMany(
+            mappedBy = "transactionOwner",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<SystemTransactions> systemTransactions;
 
     /**
      * The User of the system

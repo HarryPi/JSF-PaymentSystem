@@ -17,17 +17,20 @@ public class UserAuthenticationServiceBean implements UserAuthenticationService 
     @PersistenceContext
     EntityManager entityManager;
 
+
+
     @Override
     @Transactional(Transactional.TxType.REQUIRED)
     public void registerUser(SystemUser user, String selectedCurrency) {
         SystemUserGroup userGroup = new SystemUserGroup(user.getUsername(), "users");
-        Account account = new Account(1000, selectedCurrency, user, null);
+        Account account = new Account(1000, selectedCurrency, user);
         user.setAccount(account);
         System.out.println("Registering...");
 
         entityManager.persist(user);
         entityManager.persist(userGroup);
         entityManager.persist(account);
+
     }
 
     /**

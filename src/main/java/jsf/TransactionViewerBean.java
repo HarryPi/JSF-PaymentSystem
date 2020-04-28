@@ -6,6 +6,7 @@ import entity.SystemTransactions;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
 
@@ -13,14 +14,16 @@ import java.util.List;
 @RequestScoped
 public class TransactionViewerBean {
 
-    private boolean isLoading;
     private List<SystemTransactions> systemTransactions;
 
     @EJB
     TransactionService transactionService;
 
+    @Inject
+    LayoutControllerBean layout;
+
     public TransactionViewerBean() {
-        isLoading = true;
+
     }
 
     public List<SystemTransactions> getSystemTransactions() {
@@ -38,6 +41,7 @@ public class TransactionViewerBean {
      * @param email The {@link entity.SystemUser} username. If none provided will attempt to get from session
      */
     public void getOnload(String email) {
+        System.out.println("Begin Loading transactions...1");
         if (email.isEmpty()) {
             // This occures when a refresh happens and we were not redirected from login or register forms
             // In this case a user already exists in the session
@@ -45,14 +49,7 @@ public class TransactionViewerBean {
             email = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
         }
         this.systemTransactions = transactionService.getAllTransactionsForUser(email);
-        this.isLoading = false;
+        layout.setLoading(false);
     }
 
-    public boolean isLoading() {
-        return isLoading;
-    }
-
-    public void setLoading(boolean loading) {
-        isLoading = loading;
-    }
 }

@@ -10,6 +10,10 @@ import java.util.Objects;
         @NamedQuery(
                 name = "getUserByUsername",
                 query = "select s from SystemUser s where s.username = :email"
+        ),
+        @NamedQuery(
+                name = "getAllUsersExceptSelf",
+                query = "select s from SystemUser s where s.username <> :email"
         )
 })
 @Entity

@@ -7,6 +7,7 @@ import javax.inject.Named;
 @ApplicationScoped
 public class LayoutControllerBean {
     private boolean shouldShowSidebar = false;
+    private boolean isLoading = false;
 
     public LayoutControllerBean() {
     }
@@ -14,6 +15,16 @@ public class LayoutControllerBean {
 
     public void showSidebar() {
         this.setShouldShowSidebar(true);
+    }
+
+
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public void setLoading(boolean loading) {
+        System.out.println(String.format("setting loading to %s", loading));
+        isLoading = loading;
     }
 
 

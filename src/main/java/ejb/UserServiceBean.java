@@ -10,9 +10,10 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Stateless
-public class UserAuthenticationServiceBean implements UserAuthenticationService {
+public class UserServiceBean implements UserService {
 
     @PersistenceContext
     EntityManager entityManager;
@@ -47,6 +48,19 @@ public class UserAuthenticationServiceBean implements UserAuthenticationService 
     @Override
     public void loginUser(String email, String password) {
 
+    }
+
+    /**
+     * Gets all the users except the specified user
+     * @param selfUsername The user to not return
+     * @return A List of users except the user defined as self
+     */
+    @Override
+    public List<SystemUser> getAllUsersExceptSelf(String selfUsername) {
+        return entityManager
+                .createNamedQuery("getAllUsersExceptSelf", SystemUser.class)
+                .setParameter("email", selfUsername)
+                .getResultList();
     }
 
     @PostConstruct

@@ -1,14 +1,12 @@
 package jsf;
 
 import ejb.CurrencyService;
-import ejb.UserAuthenticationService;
-import entity.Account;
+import ejb.UserService;
 import entity.Currency;
 import entity.SystemUser;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -38,7 +36,7 @@ public class AuthBean implements Serializable {
     private CurrencyService currencyService;
 
     @EJB
-    UserAuthenticationService store;
+    UserService store;
 
     public AuthBean() {
     }
@@ -59,7 +57,7 @@ public class AuthBean implements Serializable {
             // check if we have a user loaded
             // Redirect
             if (!username.isEmpty()) {
-                context.getExternalContext().redirect("/webapps2020/faces/users/user.xhtml?faces-redirect=true");
+                context.getExternalContext().redirect("/webapps2020/faces/users/transactions.xhtml?faces-redirect=true");
             }
 
         } catch (Exception e) {
@@ -83,7 +81,7 @@ public class AuthBean implements Serializable {
             return "/index.xhtml";
         }
         System.out.println(request.getRequestURI());
-        return "/users/user.xhtml?faces-redirect=true";
+        return "/users/transactions.xhtml?faces-redirect=true";
     }
 
     public String register() {
@@ -98,7 +96,7 @@ public class AuthBean implements Serializable {
             throw new RuntimeException(ex);
         }
 
-        return "/users/user.xhtml?faces-redirect=true";
+        return "/users/transactions.xhtml?faces-redirect=true";
     }
 
     public String getUsername() {

@@ -18,13 +18,20 @@ public class UserAuthenticationServiceBean implements UserAuthenticationService 
     EntityManager entityManager;
 
 
-
+    /**
+     * Registers a new user. A new user will always be acociated with a new account and a group
+     * if any of the operations fail the entire transaction will be cancelled
+     *
+     * @param user             The {@link SystemUser} model to register
+     * @param selectedCurrency The Currency type that the user selected see {@link entity.Currency} for available options
+     */
     @Override
     @Transactional(Transactional.TxType.REQUIRED)
     public void registerUser(SystemUser user, String selectedCurrency) {
         SystemUserGroup userGroup = new SystemUserGroup(user.getUsername(), "users");
         Account account = new Account(1000, selectedCurrency, user);
         user.setAccount(account);
+
         System.out.println("Registering...");
 
         entityManager.persist(user);

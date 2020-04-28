@@ -22,13 +22,19 @@
     </ui:define>
     <ui:define name="content" id="transactionGrid">
         <h:form>
-            <p:remoteCommand actionListener="#{transactionBean.getOnload(authentication.username)}" autoRun="true"/>
+            <p:remoteCommand action="#{layout.setLoading(false)}"
+                             name="setLoadingFalse"
+                             update="progressBarIndeterminate"/>
+            <p:remoteCommand actionListener="#{transactionBean.getOnload(authentication.username)}"
+                             autoRun="true"
+                             oncomplete="setLoadingFalse()"
+            />
         </h:form>
 
         <p:fragment>
             <p:autoUpdate/>
             <div class="p-grid" style="width: 95%">
-                <div  class="p-col-12">
+                <div class="p-col-12">
                     <h3>Transactions</h3>
                     <p:progressBar rendered="#{layout.loading}" id="progressBarIndeterminate" style="height:6px;"
                                    mode="indeterminate">

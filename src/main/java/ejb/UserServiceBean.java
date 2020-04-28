@@ -1,11 +1,13 @@
 package ejb;
 
+import dao.systemuser.SystemUserDao;
 import entity.Account;
 import entity.SystemUser;
 import entity.SystemUserGroup;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
@@ -16,6 +18,9 @@ import java.util.List;
 @Stateless
 public class UserServiceBean implements UserService {
 
+    @EJB(name = "SystemUserDao")
+    private SystemUserDao userDao;
+
     @PersistenceContext
     EntityManager entityManager;
 
@@ -23,9 +28,7 @@ public class UserServiceBean implements UserService {
     public SystemUser getCurrentUser() {
         String username = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
 
-        return entityManager.createNamedQuery("getUserByUsername", SystemUser.class)
-                .setParameter("email", username)
-                .getSingleResult();
+        return userDao.getUserByEmail(username);
     }
 
     /**
@@ -44,7 +47,7 @@ public class UserServiceBean implements UserService {
 
         System.out.println("Registering...");
 
-        entityManager.persist(user);
+        userDao.persist(user);
         entityManager.persist(userGroup);
         entityManager.persist(account);
 
@@ -66,9 +69,7 @@ public class UserServiceBean implements UserService {
      */
     @Override
     public List<SystemUser> getAllUsers() {
-        return entityManager
-                .createNamedQuery("getAllUsers", SystemUser.class)
-                .getResultList();
+       return userDao.getAll();
     }
 
     @PostConstruct

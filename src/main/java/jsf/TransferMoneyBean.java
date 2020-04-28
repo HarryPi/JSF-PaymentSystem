@@ -35,7 +35,6 @@ public class TransferMoneyBean implements Serializable {
     }
 
     public void commitTransfer() {
-        System.out.println("Hello!");
     }
 
     public String getSymbolForUsersPreferredCurrency() {

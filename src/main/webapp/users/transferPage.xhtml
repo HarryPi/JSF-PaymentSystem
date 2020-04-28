@@ -25,8 +25,10 @@
     <ui:define name="content">
         <h:form>
             <p:remoteCommand actionListener="#{transfer.loadAllUsers()}" autoRun="true"/>
-            <p:remoteCommand action="#{layout.setLoading(false)}" name="setLoadingFalse" update="progressBarIndeterminate"/>
-            <p:remoteCommand action="#{layout.setLoading(true)}" name="setLoadingTrue" update="progressBarIndeterminate"/>
+            <p:remoteCommand action="#{layout.setLoading(false)}" name="setLoadingFalse"
+                             update="progressBarIndeterminate"/>
+            <p:remoteCommand action="#{layout.setLoading(true)}" name="setLoadingTrue"
+                             update="progressBarIndeterminate"/>
         </h:form>
 
         <p:fragment>
@@ -34,7 +36,7 @@
             <div class="p-grid" style="width: 95%">
                 <div class="p-col-12">
                     <h3>Trasnfers</h3>
-                    <p:growl id="growl" life="2000" />
+                    <p:growl id="growl" life="2000"/>
                     <p:progressBar rendered="#{layout.loading}" id="progressBarIndeterminate" style="height:6px;"
                                    mode="indeterminate"/>
                     <h:form class="p-grid p-col-12">
@@ -58,15 +60,18 @@
                                        decimalSeparator="," thousandSeparator="."/>
 
                         <p:outputLabel for="@next" value="Your remaining balance: " styleClass="p-col-3"/>
-                        <p:inputNumber readonly="true" styleClass="p-col-9" id="balance" value="#{transfer.currentUser.account.balance}"
+                        <p:inputNumber readonly="true" styleClass="p-col-9" id="balance"
+                                       value="#{transfer.currentUser.account.balance}"
                                        symbol="#{transfer.getUsersPreferredCurrency()}" symbolPosition="s"
                                        decimalSeparator="," thousandSeparator="."/>
 
-                        <p:commandButton value="Trasnfer"
-                                         ajax="true"
-                                         onstart="setLoadingTrue()"
-                                         oncomplete="setLoadingFalse()"
-                                         action="#{transfer.beginTransfer}"/>
+                        <p:commandButton
+                                disabled="#{layout.loading}"
+                                value="Trasnfer"
+                                ajax="true"
+                                onstart="setLoadingTrue()"
+                                oncomplete="setLoadingFalse()"
+                                action="#{transfer.commitTransfer}"/>
                     </h:form>
                 </div>
             </div>

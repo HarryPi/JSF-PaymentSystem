@@ -2,6 +2,7 @@ package ejb;
 
 import dao.SystemUserGroup.SystemUserGroupDao;
 import dao.systemuser.SystemUserDao;
+import dto.SystemUserDto;
 import entity.Account;
 import entity.SystemUser;
 import entity.SystemUserGroup;
@@ -29,10 +30,10 @@ public class UserServiceBean implements UserService {
     EntityManager entityManager;
 
 
-    public SystemUser getCurrentUser() {
+    public SystemUserDto getCurrentUser() {
         String username = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
 
-        return userDao.getUserByEmail(username);
+        return userDao.getUserByEmail(username).toDto();
     }
 
     /**
@@ -67,11 +68,16 @@ public class UserServiceBean implements UserService {
     /**
      * Gets all the registered users
      *
-     * @return A List of {@link SystemUser}
+     * @return A List of {@link SystemUserDto}
      */
     @Override
-    public List<SystemUser> getAllUsers() {
-       return userDao.getAll();
+    public List<SystemUserDto> getAllUsers() {
+       return SystemUser.toDto(userDao.getAll());
+    }
+
+    @Override
+    public SystemUserDto findUser(long id) {
+        return this.userDao.findById(id).toDto();
     }
 
     @PostConstruct

@@ -9,7 +9,6 @@ import entity.SystemUser;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -82,6 +81,7 @@ public class AuthBean implements Serializable {
             // Get currency and convert if necessary
             // todo: Convert currency via rest
             SystemUser user = this.userDto.asEntity();
+            user.setUserpassword(hashedPassword);
 
             store.registerUser(user, currency);
             this.loginToServer(this.userDto.getUsername(), this.userDto.getUserpassword());

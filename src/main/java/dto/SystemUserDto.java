@@ -4,9 +4,11 @@ import entity.Account;
 import entity.SystemTransaction;
 import entity.SystemUser;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
-public class SystemUserDto {
+public class SystemUserDto implements Serializable {
     private Long id;
     private String username;
     private String userpassword;
@@ -95,5 +97,37 @@ public class SystemUserDto {
 
     public void setTransactions(List<SystemTransaction> transactions) {
         this.transactions = transactions;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        final SystemUserDto dtoToCompare = (SystemUserDto) obj;
+
+        return dtoToCompare.id.equals(this.id);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        int hashConst = 50;
+        hash = hashConst * hash + Objects.hashCode(this.id);
+        hash = hashConst * hash + Objects.hashCode(this.username);
+        hash = hashConst * hash + Objects.hashCode(this.userpassword);
+        hash = hashConst * hash + Objects.hashCode(this.name);
+        hash = hashConst * hash + Objects.hashCode(this.surname);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return this.getId().toString();
     }
 }

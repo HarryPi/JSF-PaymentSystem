@@ -25,7 +25,7 @@
             <p:remoteCommand action="#{layout.setLoading(false)}"
                              name="setLoadingFalse"
                              update="progressBarIndeterminate"/>
-            <p:remoteCommand actionListener="#{transactionBean.getOnload(authentication.username)}"
+            <p:remoteCommand actionListener="#{transactionBean.getOnload(authentication.getUserDto().username)}"
                              autoRun="true"
                              oncomplete="setLoadingFalse()"
             />

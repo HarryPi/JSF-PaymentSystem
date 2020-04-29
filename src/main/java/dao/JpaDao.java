@@ -1,7 +1,5 @@
 package dao;
 
-import dao.DAO;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.lang.reflect.ParameterizedType;
@@ -28,8 +26,8 @@ public abstract class JpaDao<E, K> implements DAO<E, K> {
         this.entityManager.remove(entity);
     }
 
-    public Optional<E> findById(K id) {
-        return Optional.of((E) this.entityManager.find(entityClass, id));
+    public E findById(K id) {
+        return (E) this.entityManager.find(entityClass, id);
     }
 
     @Override

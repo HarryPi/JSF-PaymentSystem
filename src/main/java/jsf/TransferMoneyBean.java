@@ -1,5 +1,6 @@
 package jsf;
 
+import dto.SystemUserDto;
 import ejb.CurrencyService;
 import ejb.UserService;
 import entity.SystemUser;
@@ -17,10 +18,11 @@ import java.util.List;
 @SessionScoped
 public class TransferMoneyBean implements Serializable {
 
-    private List<SystemUser> users;
-    private SystemUser currentUser;
+    private SystemUserDto selectedUser;
+    private List<SystemUserDto> users;
+    private SystemUserDto currentUser;
     private String usersPreferredCurrency;
-
+    private int amount;
 
     @EJB
     UserService userService;
@@ -62,24 +64,25 @@ public class TransferMoneyBean implements Serializable {
 
         users.removeIf(user -> user.getUsername().equalsIgnoreCase(currentUsersEmail));
 
-        // Set loading as false and will update all components via ajax
-        layout.setLoading(false);
+        selectedUser = users.stream().findFirst().orElse(null);
         usersPreferredCurrency = getSymbolForUsersPreferredCurrency();
+
+        layout.setLoading(false); // Stop indicator
     }
 
-    public SystemUser getCurrentUser() {
+    public SystemUserDto getCurrentUser() {
         return currentUser;
     }
 
-    public void setCurrentUser(SystemUser currentUser) {
+    public void setCurrentUser(SystemUserDto currentUser) {
         this.currentUser = currentUser;
     }
 
-    public List<SystemUser> getUsers() {
+    public List<SystemUserDto> getUsers() {
         return users;
     }
 
-    public void setUsers(List<SystemUser> users) {
+    public void setUsers(List<SystemUserDto> users) {
         this.users = users;
     }
 
@@ -91,5 +94,23 @@ public class TransferMoneyBean implements Serializable {
         this.usersPreferredCurrency = usersPreferredCurrency;
     }
 
+    public void setSelectedUser(SystemUserDto dto) {
+        this.selectedUser = dto;
+    }
 
+    public SystemUserDto getSelectedUser() {
+        return selectedUser;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public UserService getUserService() {
+        return this.userService;
+    }
 }

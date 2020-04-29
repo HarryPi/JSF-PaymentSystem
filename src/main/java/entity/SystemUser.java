@@ -5,6 +5,7 @@ import dto.SystemUserDto;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -78,6 +79,16 @@ public class SystemUser {
                 this.account,
                 this.systemTransactions
         );
+    }
+
+    public static List<SystemUserDto> toDto(List<SystemUser> users) {
+        List<SystemUserDto> userDtos = new ArrayList<>();
+
+        for (SystemUser user : users) {
+            userDtos.add(user.toDto());
+        }
+
+        return userDtos;
     }
 
     public Long getId() {

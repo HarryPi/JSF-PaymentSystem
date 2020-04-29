@@ -1,31 +1,23 @@
-package entity;
+package dto;
 
-import dto.AccountDto;
+import entity.Account;
+import entity.Currency;
+import entity.SystemUser;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
-@Entity
-public class Account {
+public class AccountDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
     private int balance;
 
-    @NotNull
     private String currency;
 
-    @NotNull
-    @OneToOne
     private SystemUser systemUser;
 
-    public Account() {
+    public AccountDto() {
     }
-
 
     /**
      * Users account
@@ -34,20 +26,21 @@ public class Account {
      * @param currency   Selected currency for account see {@link Currency}
      * @param systemUser The associated {@link SystemUser}
      */
-    public Account(@NotNull int balance, @NotNull String currency, @NotNull SystemUser systemUser) {
+    public AccountDto(@NotNull int balance, @NotNull String currency, @NotNull SystemUser systemUser) {
         this.balance = balance;
         this.currency = currency;
         this.systemUser = systemUser;
     }
 
-    public AccountDto asDto() {
-        AccountDto dto = new AccountDto();
+    public Account asEntity() {
+        Account account = new Account();
+        account.setId(this.id);
+        account.setBalance(this.balance);
+        account.setCurrency(this.currency);
+        account.setSystemUser(this.systemUser);
 
-        dto.setBalance(this.balance);
-        dto.setCurrency(this.currency);
-        dto.setSystemUser(this.systemUser);
+        return account;
 
-        return dto;
     }
 
     public Long getId() {

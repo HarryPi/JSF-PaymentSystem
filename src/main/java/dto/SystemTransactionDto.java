@@ -1,33 +1,18 @@
-package entity;
+package dto;
 
-
-import dto.SystemTransactionDto;
 import ejb.TransactionStatus;
+import entity.SystemTransaction;
+import entity.SystemUser;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
-@NamedQuery(
-        name = "getAllTransactionsWithUserId",
-        query = "select t from SystemTransaction t where t.transactionOwner.id = :userId"
-)
-@Entity
-public class SystemTransaction implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class SystemTransactionDto {
     private String id;
 
-    @NotNull
     private int amount;
 
-    @NotNull
-    @Enumerated(EnumType.ORDINAL)
     private TransactionStatus status;
 
-    @NotNull
-    @ManyToOne
     /**
      * The account that owns this transaction (i.e the instigator)
      */
@@ -36,26 +21,26 @@ public class SystemTransaction implements Serializable {
     /**
      * The other participant of this transaction that either receives or sends money from the transaction owner
      */
-    @NotNull
     private String transactionParticipantId;
 
-    public SystemTransaction() {
+    public SystemTransactionDto() {
     }
 
-    public SystemTransaction(@NotNull int amount, @NotNull TransactionStatus status, @NotNull SystemUser transactionOwner, @NotNull String transactionParticipantId) {
+    public SystemTransactionDto(@NotNull int amount, @NotNull TransactionStatus status, @NotNull SystemUser transactionOwner, @NotNull String transactionParticipantId) {
         this.amount = amount;
         this.status = status;
         this.transactionOwner = transactionOwner;
         this.transactionParticipantId = transactionParticipantId;
     }
 
-    public SystemTransactionDto asDto() {
-        return new SystemTransactionDto(
-                this.amount,
-                this.status,
-                this.transactionOwner,
-                this.transactionParticipantId
-        );
+    public SystemTransaction asEntity() {
+        SystemTransaction transaction = new SystemTransaction();
+        transaction.setAmount(this.amount);
+        transaction.setStatus(this.status);
+        transaction.setTransactionOwner(this.transactionOwner);
+        transaction.setTransactionParticipantId(this.transactionParticipantId);
+
+        return transaction;
     }
 
     public String getId() {

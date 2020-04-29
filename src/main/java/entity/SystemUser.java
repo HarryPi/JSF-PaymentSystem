@@ -1,21 +1,13 @@
 package entity;
 
 
+import dto.SystemUserDto;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
 
-@NamedQueries({
-        @NamedQuery(
-                name = "getUserByUsername",
-                query = "select s from SystemUser s where s.username = :email"
-        ),
-        @NamedQuery(
-                name = "getAllUsers",
-                query = "select s from SystemUser s"
-        )
-})
 @Entity
 public class SystemUser {
 
@@ -76,6 +68,18 @@ public class SystemUser {
         this.account = account;
     }
 
+    public SystemUserDto toDto() {
+        return new SystemUserDto(
+                this.id,
+                this.username,
+                this.userpassword,
+                this.name,
+                this.surname,
+                this.account,
+                this.systemTransactions
+        );
+    }
+
     public Long getId() {
         return id;
     }
@@ -122,6 +126,14 @@ public class SystemUser {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public List<SystemTransaction> getSystemTransactions() {
+        return systemTransactions;
+    }
+
+    public void setSystemTransactions(List<SystemTransaction> systemTransactions) {
+        this.systemTransactions = systemTransactions;
     }
 
     @Override

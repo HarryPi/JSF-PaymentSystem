@@ -128,6 +128,6 @@ public class SystemUserDto implements Serializable {
 
     @Override
     public String toString() {
-        return this.getId().toString();
+        return String.valueOf(this.getId());
     }
 }

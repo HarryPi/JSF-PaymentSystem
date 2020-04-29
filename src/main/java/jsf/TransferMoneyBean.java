@@ -2,11 +2,14 @@ package jsf;
 
 import dto.SystemUserDto;
 import ejb.CurrencyService;
+import ejb.PaymentService;
 import ejb.UserService;
 import entity.SystemUser;
 
 import javax.ejb.EJB;
+import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,6 +30,9 @@ public class TransferMoneyBean implements Serializable {
     @EJB
     UserService userService;
 
+    @EJB
+    PaymentService paymentService;
+
     @Inject
     CurrencyService currencyService;
 
@@ -36,7 +42,18 @@ public class TransferMoneyBean implements Serializable {
     public TransferMoneyBean() {
     }
 
+    public void requestMoney() {
+        paymentService.requestMoney(currentUser.getUsername(), selectedUser.getUsername(), amount);
+        this.displayFacesMessage("Success", "Request sent successfully", FacesMessage.SEVERITY_INFO);
+    }
+
     public void commitTransfer() {
+
+        if (paymentService.pay(currentUser.getUsername(), selectedUser.getUsername(), amount)) {
+            this.displayFacesMessage("Success", "Transaction completed successfully", FacesMessage.SEVERITY_INFO);
+        } else {
+            this.displayFacesMessage("Failure", "Transaction failed to complete!", FacesMessage.SEVERITY_ERROR);
+        }
     }
 
     public String getSymbolForUsersPreferredCurrency() {
@@ -68,6 +85,11 @@ public class TransferMoneyBean implements Serializable {
         usersPreferredCurrency = getSymbolForUsersPreferredCurrency();
 
         layout.setLoading(false); // Stop indicator
+    }
+
+    private void displayFacesMessage(String title, String description, FacesMessage.Severity severity) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(severity, title, description));
     }
 
     public SystemUserDto getCurrentUser() {
@@ -113,4 +135,6 @@ public class TransferMoneyBean implements Serializable {
     public UserService getUserService() {
         return this.userService;
     }
+
+
 }

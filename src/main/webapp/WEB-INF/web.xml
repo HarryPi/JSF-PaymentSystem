@@ -24,6 +24,10 @@
 	</welcome-file-list>
 	<!--Primefaces-->
 	<context-param>
+		<param-name>primefaces.FONT_AWESOME</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
 		<param-name>primefaces.THEME</param-name>
 		<param-value>luna-blue</param-value>
 	</context-param>
@@ -74,4 +78,26 @@
 			<form-error-page>/index.xhtml</form-error-page>
 		</form-login-config>
 	</login-config>
+
+	<!--Mime mappings-->
+	<mime-mapping>
+		<extension>eot</extension>
+		<mime-type>application/vnd.ms-fontobject</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>otf</extension>
+		<mime-type>font/opentype</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>ttf</extension>
+		<mime-type>application/x-font-ttf</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>woff</extension>
+		<mime-type>application/x-font-woff</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>svg</extension>
+		<mime-type>image/svg+xml</mime-type>
+	</mime-mapping>
 </web-app>

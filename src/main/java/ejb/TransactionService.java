@@ -1,9 +1,9 @@
 package ejb;
 
-import entity.SystemTransaction;
+import dto.SystemTransactionDto;
 
 import java.util.List;
 
 public interface TransactionService {
-    List<SystemTransaction> getAllTransactionsForUser(String username);
+    List<SystemTransactionDto> getAllTransactionsForUser(String username);
 }

@@ -7,7 +7,7 @@ public enum TransactionStatus {
     /**
      * When a user requests money from a different user
      */
-    REQUESTED,
+    REQUEST_SENT,
     /**
      * When a user has made a transfer and awaiting confirmation
      */
@@ -19,5 +19,9 @@ public enum TransactionStatus {
     /**
      * When a transaction has concluded and the user sent money
      */
-    SENT
+    SENT,
+    /**
+     * When another user has requested from this user money
+     */
+    REQUEST_RECEIVED
 }

@@ -1,8 +1,10 @@
 package ejb;
 
 import dao.Account.AccountDao;
+import dao.SystemTransaction.SystemTransactionDao;
 import dao.systemuser.SystemUserDao;
 import entity.Account;
+import entity.SystemTransaction;
 import entity.SystemUser;
 
 import javax.ejb.EJB;
@@ -17,6 +19,9 @@ public class PaymentServiceBean implements PaymentService {
 
     @EJB
     AccountDao accountDao;
+
+    @EJB
+    SystemTransactionDao transactionDao;
 
     public PaymentServiceBean() {
     }
@@ -45,6 +50,19 @@ public class PaymentServiceBean implements PaymentService {
         accountDao.updateBalance(accountFrom.getBalance() - amount, accountFrom.getId());
         accountDao.updateBalance(accountTo.getBalance() + amount, accountTo.getId());
 
+        // Create Transaction to reflect payment
+        transactionDao.persist(new SystemTransaction(amount, TransactionStatus.SENT, userFrom, userTo.getId()));
+        transactionDao.persist(new SystemTransaction(amount, TransactionStatus.RECEIVED, userTo, userFrom.getId()));
         return true;
+    }
+
+    @Override
+    public void requestMoney(String from, String to, int amount) {
+        SystemUser userFrom = userDao.getUserByEmail(from);
+        SystemUser userTo = userDao.getUserByEmail(to);
+
+        // Create Transaction to reflect payment
+        transactionDao.persist(new SystemTransaction(amount, TransactionStatus.REQUEST_SENT, userFrom, userTo.getId()));
+        transactionDao.persist(new SystemTransaction(amount, TransactionStatus.REQUEST_RECEIVED, userTo, userFrom.getId()));
     }
 }

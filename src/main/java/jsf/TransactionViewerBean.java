@@ -1,27 +1,36 @@
 package jsf;
 
 import dto.SystemTransactionDto;
+import dto.SystemUserDto;
+import ejb.CurrencyService;
 import ejb.TransactionService;
-import entity.SystemTransaction;
+import ejb.UserService;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.util.List;
 
 @Named(value = "transactionBean")
-@RequestScoped
-public class TransactionViewerBean {
+@ViewScoped
+public class TransactionViewerBean implements Serializable {
 
     private List<SystemTransactionDto> transactionsDto;
+    private String currencySymbol;
 
     @EJB
     TransactionService transactionService;
 
+    @EJB
+    UserService userService;
+
     @Inject
     LayoutControllerBean layout;
+    @Inject
+    CurrencyService currencyService;
 
     public TransactionViewerBean() {
 
@@ -50,7 +59,17 @@ public class TransactionViewerBean {
             email = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
         }
 
-        this.transactionsDto = SystemTransaction.asDto(transactionService.getAllTransactionsForUser(email));
+        SystemUserDto currentUser = this.userService.getCurrentUser();
+        this.transactionsDto = transactionService.getAllTransactionsForUser(email);
+        this.transactionsDto.forEach(t -> t.setTransactionParticipant(userService.findUser(t.getTransactionParticipantId())));
+        this.currencySymbol = this.currencyService.get(currentUser.getAccount().getCurrency()).getDisplaySymbol();
     }
 
+    public String getCurrencySymbol() {
+        return currencySymbol;
+    }
+
+    public void setCurrencySymbol(String currencySymbol) {
+        this.currencySymbol = currencySymbol;
+    }
 }

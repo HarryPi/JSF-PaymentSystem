@@ -39,12 +39,12 @@ public class SystemTransaction implements Serializable {
      * The other participant of this transaction that either receives or sends money from the transaction owner
      */
     @NotNull
-    private String transactionParticipantId;
+    private long transactionParticipantId;
 
     public SystemTransaction() {
     }
 
-    public SystemTransaction(@NotNull int amount, @NotNull TransactionStatus status, @NotNull SystemUser transactionOwner, @NotNull String transactionParticipantId) {
+    public SystemTransaction(@NotNull int amount, @NotNull TransactionStatus status, @NotNull SystemUser transactionOwner, @NotNull long transactionParticipantId) {
         this.amount = amount;
         this.status = status;
         this.transactionOwner = transactionOwner;
@@ -55,7 +55,7 @@ public class SystemTransaction implements Serializable {
         return new SystemTransactionDto(
                 this.amount,
                 this.status,
-                this.transactionOwner,
+                this.transactionOwner.toDto(),
                 this.transactionParticipantId
         );
     }
@@ -102,11 +102,11 @@ public class SystemTransaction implements Serializable {
         this.transactionOwner = transactionOwner;
     }
 
-    public String getTransactionParticipantId() {
+    public long getTransactionParticipantId() {
         return transactionParticipantId;
     }
 
-    public void setTransactionParticipantId(String transactionParticipantId) {
+    public void setTransactionParticipantId(long transactionParticipantId) {
         this.transactionParticipantId = transactionParticipantId;
     }
 }

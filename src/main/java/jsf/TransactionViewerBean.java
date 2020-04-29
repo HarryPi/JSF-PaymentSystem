@@ -1,5 +1,6 @@
 package jsf;
 
+import dto.SystemTransactionDto;
 import ejb.TransactionService;
 import entity.SystemTransaction;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @RequestScoped
 public class TransactionViewerBean {
 
-    private List<SystemTransaction> systemTransactions;
+    private List<SystemTransactionDto> transactionsDto;
 
     @EJB
     TransactionService transactionService;
@@ -26,12 +27,12 @@ public class TransactionViewerBean {
 
     }
 
-    public List<SystemTransaction> getSystemTransactions() {
-        return systemTransactions;
+    public List<SystemTransactionDto> getTransactionsDto() {
+        return transactionsDto;
     }
 
-    public void setSystemTransactions(List<SystemTransaction> systemTransactions) {
-        this.systemTransactions = systemTransactions;
+    public void setTransactionsDto(List<SystemTransactionDto> transactionsDto) {
+        this.transactionsDto = transactionsDto;
     }
 
     /**
@@ -48,7 +49,8 @@ public class TransactionViewerBean {
             // Retrieve that user
             email = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
         }
-        this.systemTransactions = transactionService.getAllTransactionsForUser(email);
+
+        this.transactionsDto = SystemTransaction.asDto(transactionService.getAllTransactionsForUser(email));
     }
 
 }

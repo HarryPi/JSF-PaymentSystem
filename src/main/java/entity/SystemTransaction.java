@@ -7,6 +7,8 @@ import ejb.TransactionStatus;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @NamedQuery(
         name = "getAllTransactionsWithUserId",
@@ -56,6 +58,16 @@ public class SystemTransaction implements Serializable {
                 this.transactionOwner,
                 this.transactionParticipantId
         );
+    }
+
+    public static List<SystemTransactionDto> asDto(List<SystemTransaction> transactions) {
+        List<SystemTransactionDto> dtos = new ArrayList<>();
+
+        for (SystemTransaction transaction : transactions) {
+            dtos.add(transaction.asDto());
+        }
+
+        return dtos;
     }
 
     public String getId() {

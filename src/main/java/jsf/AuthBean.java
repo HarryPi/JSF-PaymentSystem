@@ -1,5 +1,6 @@
 package jsf;
 
+import dto.SystemUserDto;
 import ejb.CurrencyService;
 import ejb.UserService;
 import entity.Currency;
@@ -24,13 +25,9 @@ import java.util.List;
 @Named("authentication")
 @SessionScoped
 public class AuthBean implements Serializable {
-    private String username;
-    private String userpassword;
-    private String name;
-    private String lastName;
     private String currency;
-
     private List<Currency> currencies;
+    private SystemUserDto userDto;
 
     @Inject
     private CurrencyService currencyService;
@@ -39,6 +36,7 @@ public class AuthBean implements Serializable {
     UserService store;
 
     public AuthBean() {
+        this.userDto = new SystemUserDto();
     }
 
     @PostConstruct
@@ -67,7 +65,7 @@ public class AuthBean implements Serializable {
 
     public String login() {
         try {
-            this.loginToServer(this.username, this.userpassword);
+            this.loginToServer(this.userDto.getUsername(), this.userDto.getUserpassword());
             System.out.println("Success!");
         } catch (ServletException e) {
             System.out.println("Error :(");
@@ -82,48 +80,17 @@ public class AuthBean implements Serializable {
             String hashedPassword = this.encodePassword(); // Get encoded password
 
             // Get currency and convert if necessary
-            // todo: Convert currency
-            SystemUser user = new SystemUser(username, hashedPassword, name, lastName, null);
+            // todo: Convert currency via rest
+            SystemUser user = this.userDto.asEntity();
+
             store.registerUser(user, currency);
-            this.loginToServer(this.username, this.userpassword);
+            this.loginToServer(this.userDto.getUsername(), this.userDto.getUserpassword());
 
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
 
         return "/users/transactions.xhtml?faces-redirect=true";
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getUserpassword() {
-        return userpassword;
-    }
-
-    public void setUserpassword(String userpassword) {
-        this.userpassword = userpassword;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getCurrency() {
@@ -142,9 +109,17 @@ public class AuthBean implements Serializable {
         this.currencies = currencies;
     }
 
+    public SystemUserDto getUserDto() {
+        return userDto;
+    }
+
+    public void setUserDto(SystemUserDto userDto) {
+        this.userDto = userDto;
+    }
+
     private String encodePassword() throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
-        md.update(userpassword.getBytes(StandardCharsets.UTF_8));
+        md.update(this.userDto.getUserpassword().getBytes(StandardCharsets.UTF_8));
         return bytesToHex(md.digest());
     }
 

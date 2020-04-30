@@ -15,9 +15,11 @@ import javax.ejb.Stateless;
 import javax.faces.context.FacesContext;
 import javax.transaction.Transactional;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 
 @Stateless
+@RolesAllowed({"users", "admins"})
 public class UserServiceBean implements UserService {
 
     @EJB(name = "SystemUserDao")
@@ -100,5 +102,15 @@ public class UserServiceBean implements UserService {
     @PreDestroy
     public void preDestroy() {
         System.out.println("CommentStore: PreDestroy");
+    }
+
+    @Override
+    @RolesAllowed("admins")
+    @Transactional(Transactional.TxType.REQUIRED)
+    public void registerAdmin(SystemUserDto user) {
+       SystemUserGroup userGroup = new SystemUserGroup(user.getUsername(), "admins");
+
+        userDao.persist(user.asEntity()); // No need to persist account as it is already attached to user
+        userGroupDao.persist(userGroup);
     }
 }

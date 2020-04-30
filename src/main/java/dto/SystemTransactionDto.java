@@ -9,8 +9,9 @@ import javax.validation.constraints.NotNull;
 public class SystemTransactionDto {
     private long id;
 
-    private int amount;
-
+    private double amount;
+    private double preConversionAmount;
+    
     private TransactionStatus status;
 
     /**
@@ -28,7 +29,12 @@ public class SystemTransactionDto {
     public SystemTransactionDto() {
     }
 
-    public SystemTransactionDto(@NotNull int amount, @NotNull TransactionStatus status, @NotNull SystemUserDto transactionOwner, @NotNull long transactionParticipantId) {
+    public SystemTransactionDto(
+            @NotNull double amount,
+            @NotNull TransactionStatus status,
+            @NotNull SystemUserDto transactionOwner,
+            @NotNull long transactionParticipantId
+    ) {
         this.amount = amount;
         this.status = status;
         this.transactionOwner = transactionOwner;
@@ -37,7 +43,7 @@ public class SystemTransactionDto {
 
     public SystemTransactionDto(
             long id,
-            @NotNull int amount,
+            @NotNull double amount,
             @NotNull TransactionStatus status,
             SystemUserDto transactionOwner,
             @NotNull long transactionParticipantId,
@@ -53,7 +59,7 @@ public class SystemTransactionDto {
 
     public SystemTransactionDto(
             long id,
-            int amount,
+            double amount,
             TransactionStatus status,
             SystemUserDto toDto,
             long transactionParticipantId
@@ -72,6 +78,7 @@ public class SystemTransactionDto {
         transaction.setStatus(this.status);
         transaction.setTransactionOwner(this.transactionOwner.asEntity());
         transaction.setTransactionParticipantId(this.transactionParticipantId);
+        transaction.setPreConversionAmount(this.preConversionAmount);
 
         return transaction;
     }
@@ -84,7 +91,7 @@ public class SystemTransactionDto {
         this.id = id;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
@@ -123,4 +130,13 @@ public class SystemTransactionDto {
     public void setTransactionParticipant(SystemUserDto transactionParticipant) {
         this.transactionParticipant = transactionParticipant;
     }
+
+    public double getPreConversionAmount() {
+        return preConversionAmount;
+    }
+
+    public void setPreConversionAmount(double preConversionAmount) {
+        this.preConversionAmount = preConversionAmount;
+    }
+    
 }

@@ -5,47 +5,30 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<h:head>
-    <title><ui:insert name="title">Default title</ui:insert></title>
-</h:head>
-<h:body>
-    <h:outputStylesheet name="css/primeflex.css"/>
-    <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+    <h:head>
+        <title><ui:insert name="title">Default title</ui:insert></title>
+    </h:head>
+    <h:body>
+        <h:outputStylesheet name="css/primeflex.css"/>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
 
-    <p:layout fullPage="true">
-        <p:layoutUnit resizable="true" id="header" size="60" position="north">
-            <p:growl id="growl" life="3000"/>
-            <p:toolbar>
-                <f:facet name="left">
-                    <span>Logo!</span>
-                </f:facet>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">
+                <h:outputText value="South unit content."/>
+            </p:layoutUnit>
 
-                <f:facet name="right">
-                    <ui:insert name="toolbarOptionsRight">
+            <p:layoutUnit header="Account options" collapsible="true" resizable="true" position="west" size="200"
+                          visible="#{layout.shouldShowSidebar}">
+                <ui:insert name="sidebar"/>
+            </p:layoutUnit>
 
-                    </ui:insert>
-                </f:facet>
-
-            </p:toolbar>
-        </p:layoutUnit>
-
-        <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">
-            <h:outputText value="South unit content."/>
-        </p:layoutUnit>
-
-        <p:layoutUnit header="Account options" collapsible="true" resizable="true" position="west" size="200"
-                      visible="#{layout.shouldShowSidebar}">
-            <ui:insert name="sidebar"/>
-        </p:layoutUnit>
-
-        <!--<p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">
-            <h:outputText value="Right unit content." />
-        </p:layoutUnit>
--->
-        <p:layoutUnit position="center">
-            <ui:insert name="content">Put default content here, if any.</ui:insert>
-        </p:layoutUnit>
-    </p:layout>
-    <p:sticky target="header"/>
-</h:body>
+            <!--<p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">
+                <h:outputText value="Right unit content." />
+            </p:layoutUnit>
+            -->
+            <p:layoutUnit position="center">
+                <ui:insert name="content">Put default content here, if any.</ui:insert>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
 </html>

@@ -54,6 +54,9 @@ public class TransferMoneyBean implements Serializable {
         } else {
             this.layout.displayFacesMessage("Failure", "Transaction failed to complete!", FacesMessage.SEVERITY_ERROR);
         }
+        
+        // Current user is before commit so get modified user from service
+        SystemUserDto modifiedUser = this.userService.getCurrentUser();
     }
 
     public String getSymbolForUsersPreferredCurrency() {

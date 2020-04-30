@@ -10,7 +10,8 @@ import javax.inject.Named;
 public class LayoutControllerBean {
     private boolean shouldShowSidebar = false;
     private boolean isLoading = false;
-
+    private String balanceDisplay;
+    
     public LayoutControllerBean() {
     }
 
@@ -45,4 +46,5 @@ public class LayoutControllerBean {
     public void setShouldShowSidebar(boolean shouldShowSidebar) {
         this.shouldShowSidebar = shouldShowSidebar;
     }
+
 }

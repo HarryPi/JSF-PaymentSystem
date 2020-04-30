@@ -12,6 +12,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Named(value = "transactionBean")
@@ -22,6 +23,7 @@ public class TransactionViewerBean implements Serializable {
     private List<SystemTransactionDto> receivedTransactions;
     private List<SystemTransactionDto> sentTransactions;
     private String currencySymbol;
+    private double balance;
 
     @EJB
     TransactionService transactionService;
@@ -60,6 +62,9 @@ public class TransactionViewerBean implements Serializable {
 
         this.currencySymbol = this.currencyService.get(currentUser.getAccount().getCurrency()).getDisplaySymbol();
         this.noOfPendingRequests = this.transactionService.getNoOfPendingRequestedTransactions(currentUser.getId());
+        
+        this.setBalance(currentUser.getAccount().getBalance());
+        
     }
 
     public String getCurrencySymbol() {
@@ -94,4 +99,14 @@ public class TransactionViewerBean implements Serializable {
     public void setSentTransactions(List<SystemTransactionDto> sentTransactions) {
         this.sentTransactions = sentTransactions;
     }
+
+    public double getBalance() {
+        return Math.floor(balance * 100) / 100;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+    
+    
 }

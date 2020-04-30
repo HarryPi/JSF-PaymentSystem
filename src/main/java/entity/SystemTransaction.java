@@ -1,6 +1,5 @@
 package entity;
 
-
 import dto.SystemTransactionDto;
 import ejb.TransactionStatus;
 
@@ -22,7 +21,7 @@ public class SystemTransaction implements Serializable {
     private long id;
 
     @NotNull
-    private int amount;
+    private double amount;
 
     @NotNull
     @Enumerated(EnumType.ORDINAL)
@@ -36,18 +35,20 @@ public class SystemTransaction implements Serializable {
     private SystemUser transactionOwner;
 
     /**
-     * The other participant of this transaction that either receives or sends money from the transaction owner
+     * The other participant of this transaction that either receives or sends
+     * money from the transaction owner
      */
     @NotNull
     private long transactionParticipantId;
 
+    private double preConversionAmount;
 
     public SystemTransaction() {
     }
 
     public SystemTransaction(
             @NotNull long id,
-            @NotNull int amount,
+            @NotNull double amount,
             @NotNull TransactionStatus status,
             @NotNull SystemUser transactionOwner,
             @NotNull long transactionParticipantId) {
@@ -59,25 +60,29 @@ public class SystemTransaction implements Serializable {
     }
 
     public SystemTransaction(
-            @NotNull int amount,
+            @NotNull double amount,
             @NotNull TransactionStatus status,
             @NotNull SystemUser transactionOwner,
-            @NotNull long transactionParticipantId
+            @NotNull long transactionParticipantId,
+            double preConversionAmount
     ) {
         this.amount = amount;
         this.status = status;
         this.transactionOwner = transactionOwner;
         this.transactionParticipantId = transactionParticipantId;
+        this.preConversionAmount = preConversionAmount;
     }
 
     public SystemTransactionDto asDto() {
-        return new SystemTransactionDto(
+        SystemTransactionDto t = new SystemTransactionDto(
                 this.id,
                 this.amount,
                 this.status,
                 this.transactionOwner.toDto(),
                 this.transactionParticipantId
         );
+        t.setPreConversionAmount(this.preConversionAmount);
+        return t;
     }
 
     public static List<SystemTransactionDto> asDto(List<SystemTransaction> transactions) {
@@ -98,11 +103,11 @@ public class SystemTransaction implements Serializable {
         this.id = id;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -129,4 +134,13 @@ public class SystemTransaction implements Serializable {
     public void setTransactionParticipantId(long transactionParticipantId) {
         this.transactionParticipantId = transactionParticipantId;
     }
+
+    public double getPreConversionAmount() {
+        return preConversionAmount;
+    }
+
+    public void setPreConversionAmount(double preConversionAmount) {
+        this.preConversionAmount = preConversionAmount;
+    }
+
 }

@@ -1,12 +1,13 @@
 package jsf;
 
 import dto.SystemTransactionDto;
+import dto.SystemUserDto;
+import ejb.CurrencyService;
 import ejb.TransactionService;
 import ejb.UserService;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.el.MethodExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -18,6 +19,7 @@ import java.util.List;
 @Named
 @ViewScoped
 public class TransferRequestsBean implements Serializable {
+
     private List<SystemTransactionDto> transactions;
     private List<SystemTransactionDto> selectedTransactions;
 
@@ -30,6 +32,9 @@ public class TransferRequestsBean implements Serializable {
     @Inject
     LayoutControllerBean layout;
 
+    @Inject
+    CurrencyService currencyService;
+    
     @PostConstruct
     public void displaySidebar() {
         layout.setShouldShowSidebar(true);
@@ -38,10 +43,10 @@ public class TransferRequestsBean implements Serializable {
     public TransferRequestsBean() {
     }
 
-
     public void loadAllRequests() {
+        SystemUserDto currentUser = userService.getCurrentUser();
         this.transactions = this.transactionService
-                .getPendingRequestedTransactions(userService.getCurrentUser().getId());
+                .getPendingRequestedTransactions(currentUser.getId());
     }
 
     public void approveSelected() {
@@ -49,6 +54,9 @@ public class TransferRequestsBean implements Serializable {
         this.loadAllRequests();
         this.selectedTransactions = new ArrayList<>();
         this.layout.displayFacesMessage("Money Trasnfered!", "All selected requests where approved", FacesMessage.SEVERITY_INFO);
+        
+        SystemUserDto currentUser = userService.getCurrentUser();
+        
     }
 
     public void rejectSelected() {
@@ -57,7 +65,6 @@ public class TransferRequestsBean implements Serializable {
         this.selectedTransactions = new ArrayList<>();
         this.layout.displayFacesMessage("Requests removed!", "All selected requests where removed and declined", FacesMessage.SEVERITY_INFO);
     }
-
 
     public List<SystemTransactionDto> getTransactions() {
         return transactions;
@@ -74,6 +81,5 @@ public class TransferRequestsBean implements Serializable {
     public void setSelectedTransactions(List<SystemTransactionDto> selectedTransactions) {
         this.selectedTransactions = selectedTransactions;
     }
-
 
 }

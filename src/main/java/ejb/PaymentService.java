@@ -10,7 +10,7 @@ public interface PaymentService {
      * @param amount The amount
      * @return Returns if this action is possible to complete or not
      */
-    boolean pay(String from, String to, int amount);
+    boolean pay(String from, String to, double amount);
 
     /**
      * Request money from a user will NOT CHECK if the other user has enough money.
@@ -18,5 +18,5 @@ public interface PaymentService {
      * @param to User email to add money to
      * @param amount The amount
      */
-    void requestMoney(String from, String to, int amount);
+    void requestMoney(String from, String to, double amount);
 }

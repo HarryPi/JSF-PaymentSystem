@@ -31,7 +31,7 @@
                              autoRun="true"
                              update="transaction-tables"
                              oncomplete="setLoadingFalse()"
-            />
+                             />
         </h:form>
 
         <p:fragment>
@@ -39,6 +39,7 @@
             <div class="p-grid">
                 <div class="p-col-12">
                     <h3>Transactions</h3>
+                    <h5>Balance: #{transactionBean.currencySymbol}#{transactionBean.balance}</h5>
                     <p:progressBar rendered="#{layout.loading}" id="progressBarIndeterminate" style="height:6px;"
                                    mode="indeterminate">
                     </p:progressBar>
@@ -46,14 +47,20 @@
                         <p:staticMessage severity="info"
                                          summary="Pending Requests"
                                          detail="You have #{transactionBean.noOfPendingRequests} requests pending
-                                            Click on Approve / Decline requests to see and interact with them"/>
+                                         Click on Approve / Decline requests to see and interact with them"/>
                     </div>
                 </div>
                 <p:outputPanel styleClass="p-col-12" id="transaction-tables" style="text-align: center;">
                     <h4 class="p-col-12">Received Transactions</h4>
                     <p:dataTable styleClass="p-col-10 p-offset-1" id="receivedTransactionsDataTable"
                                  var="receivedTransactions"
-                                 value="#{transactionBean.receivedTransactions}">
+                                 value="#{transactionBean.receivedTransactions}"
+                                 rows="10"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                 rowsPerPageTemplate="5,10,15"
+                                 >
                         <p:column headerText="Amount">
                             <p:inputNumber readonly="true"
                                            value="#{receivedTransactions.amount}"
@@ -68,10 +75,16 @@
 
                     <h4 class="p-col-12">Sent Transactions</h4>
                     <p:dataTable styleClass="p-col-10 p-offset-1" id="sentTransactionsDataTable" var="transaction"
-                                 value="#{transactionBean.sentTransactions}">
+                                 value="#{transactionBean.sentTransactions}"
+                                 rows="10"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                 rowsPerPageTemplate="5,10,15"
+                                 >
                         <p:column headerText="Amount">
                             <p:inputNumber readonly="true"
-                                           value="#{transaction.amount}"
+                                           value="#{transaction.preConversionAmount}"
                                            symbol="#{transactionBean.currencySymbol}" symbolPosition="s"
                                            decimalSeparator="," thousandSeparator="."/>
                         </p:column>

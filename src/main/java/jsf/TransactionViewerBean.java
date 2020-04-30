@@ -31,6 +31,7 @@ public class TransactionViewerBean implements Serializable {
 
     @Inject
     LayoutControllerBean layout;
+    
     @Inject
     CurrencyService currencyService;
 

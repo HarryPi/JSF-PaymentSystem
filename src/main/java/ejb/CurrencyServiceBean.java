@@ -7,6 +7,9 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.Response;
 
 @Named
 @ApplicationScoped
@@ -37,5 +40,19 @@ public class CurrencyServiceBean implements CurrencyService {
             default:
                 return this.currencies.get(0);
         }
+    }
+
+    @Override
+    public double convertToCurrency(String from, String to, double amount) {
+        Client client = ClientBuilder.newClient();
+        Response response = client.target("http://localhost:8080/webapps2020/conversion/{currency1}/{currency2}/{amount}")
+                .resolveTemplate("currency1", from)
+                .resolveTemplate("currency2", to)
+                .resolveTemplate("amount", amount)
+                .request("application/json")
+                .get();
+        String newBalance = response.readEntity(String.class);
+        
+        return Double.parseDouble(newBalance);
     }
 }

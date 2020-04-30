@@ -10,7 +10,7 @@ public class AccountDto {
 
     private Long id;
 
-    private int balance;
+    private double balance;
 
     private String currency;
 
@@ -51,11 +51,11 @@ public class AccountDto {
         this.id = id;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

@@ -4,6 +4,7 @@ import dao.SystemUserGroup.SystemUserGroupDao;
 import dao.systemuser.SystemUserDao;
 import dto.SystemUserDto;
 import entity.Account;
+import entity.Currency;
 import entity.SystemUser;
 import entity.SystemUserGroup;
 
@@ -12,10 +13,9 @@ import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.faces.context.FacesContext;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
+import javax.inject.Inject;
 
 @Stateless
 public class UserServiceBean implements UserService {
@@ -26,9 +26,8 @@ public class UserServiceBean implements UserService {
     @EJB
     private SystemUserGroupDao userGroupDao;
 
-    @PersistenceContext
-    EntityManager entityManager;
-
+    @Inject
+    private CurrencyService currencyService;
 
     public SystemUserDto getCurrentUser() {
         String username = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
@@ -47,7 +46,15 @@ public class UserServiceBean implements UserService {
     @Transactional(Transactional.TxType.REQUIRED)
     public void registerUser(SystemUser user, String selectedCurrency) {
         SystemUserGroup userGroup = new SystemUserGroup(user.getUsername(), "users");
-        Account account = new Account(1000, selectedCurrency, user);
+        
+        double balance = 1000.0;
+        if (!selectedCurrency.equals(Currency.gbPounds)) {
+            // Convert to currency
+            balance = this.currencyService
+                    .convertToCurrency(Currency.gbPounds, selectedCurrency, 1000);
+        }
+        
+        Account account = new Account(balance, selectedCurrency, user);
         user.setAccount(account);
 
         System.out.println("Registering...");

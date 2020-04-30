@@ -6,6 +6,14 @@ import java.util.List;
 
 public interface CurrencyService {
     List<Currency> getCurrencies();
-
+    /**
+     * Converts from one currency to another
+     * 
+     * @param from {@link Currency} to convert from
+     * @param to {@link Currency} to convert to
+     * @param amount Amount to convert
+     * @return returns the converted amount
+     */
+    double convertToCurrency(String from, String to, double amount);
     Currency get(String currencyType);
 }

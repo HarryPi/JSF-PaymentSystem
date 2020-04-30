@@ -71,7 +71,10 @@ public class CurrencyConverterApi {
                             .build();
                 }
             default:
-                return null;
+                return Response
+                            .status(Response.Status.BAD_REQUEST)
+                            .entity(String.valueOf("Failed to find currency to convert"))
+                            .build();
         }
     }
 }

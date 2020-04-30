@@ -83,6 +83,7 @@ public class AuthBean implements Serializable {
             SystemUser user = this.userDto.asEntity();
             user.setUserpassword(hashedPassword);
 
+            
             store.registerUser(user, currency);
             this.loginToServer(this.userDto.getUsername(), this.userDto.getUserpassword());
 

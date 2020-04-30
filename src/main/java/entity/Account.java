@@ -14,7 +14,7 @@ public class Account {
     private Long id;
 
     @NotNull
-    private int balance;
+    private double balance;
 
     @NotNull
     private String currency;
@@ -34,7 +34,7 @@ public class Account {
      * @param currency   Selected currency for account see {@link Currency}
      * @param systemUser The associated {@link SystemUser}
      */
-    public Account(@NotNull int balance, @NotNull String currency, @NotNull SystemUser systemUser) {
+    public Account(@NotNull double balance, @NotNull String currency, @NotNull SystemUser systemUser) {
         this.balance = balance;
         this.currency = currency;
         this.systemUser = systemUser;
@@ -58,11 +58,11 @@ public class Account {
         this.id = id;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

@@ -27,7 +27,6 @@ public class CurrencyConverterApi {
             @PathParam("currency1") String currencyType1,
             @PathParam("currency2") String currencyType2,
             @PathParam("amount") double amount
-
     ) {
 
         switch (currencyType1) {
@@ -44,6 +43,7 @@ public class CurrencyConverterApi {
                             .entity(String.valueOf(amount * EURO_to_USD_rate))
                             .build();
                 }
+
             case Currency.gbPounds:
                 if (currencyType2.equals(Currency.euros)) {
                     return Response
@@ -57,6 +57,7 @@ public class CurrencyConverterApi {
                             .entity(String.valueOf(amount * GBP_to_USD_rate))
                             .build();
                 }
+
             case Currency.usDollars:
                 if (currencyType2.equals(Currency.euros)) {
                     return Response
@@ -71,10 +72,11 @@ public class CurrencyConverterApi {
                             .build();
                 }
             default:
+                // If however all fails return bad request
                 return Response
-                            .status(Response.Status.BAD_REQUEST)
-                            .entity(String.valueOf("Failed to find currency to convert"))
-                            .build();
+                        .status(Response.Status.BAD_REQUEST)
+                        .entity(String.valueOf("Failed to find currency to convert"))
+                        .build();
         }
     }
 }

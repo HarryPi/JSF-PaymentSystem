@@ -44,6 +44,11 @@ public class CurrencyServiceBean implements CurrencyService {
 
     @Override
     public double convertToCurrency(String from, String to, double amount) {
+        // If same currency is provided do not make the trip to the server
+        // Rather just return same amount
+        if (from.equals(to)) {
+            return amount;
+        }
         Client client = ClientBuilder.newClient();
         Response response = client.target("http://localhost:8080/webapps2020/conversion/{currency1}/{currency2}/{amount}")
                 .resolveTemplate("currency1", from)

@@ -8,6 +8,7 @@ public interface CurrencyService {
     List<Currency> getCurrencies();
     /**
      * Converts from one currency to another
+     * If same currency is provided the same amount will be returned
      * 
      * @param from {@link Currency} to convert from
      * @param to {@link Currency} to convert to

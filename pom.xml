@@ -58,12 +58,6 @@
             <version>2.5.2</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>${jakartaee}</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
     <repositories>
         <repository>

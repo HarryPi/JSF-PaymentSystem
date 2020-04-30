@@ -1,6 +1,8 @@
 package jsf;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 @Named(value = "layout")
@@ -27,6 +29,10 @@ public class LayoutControllerBean {
         isLoading = loading;
     }
 
+    public void displayFacesMessage(String title, String description, FacesMessage.Severity severity) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(severity, title, description));
+    }
 
     public void ensureSidebarHidden() {
         this.setShouldShowSidebar(false);

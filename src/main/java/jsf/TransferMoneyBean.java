@@ -44,15 +44,15 @@ public class TransferMoneyBean implements Serializable {
 
     public void requestMoney() {
         paymentService.requestMoney(currentUser.getUsername(), selectedUser.getUsername(), amount);
-        this.displayFacesMessage("Success", "Request sent successfully", FacesMessage.SEVERITY_INFO);
+        this.layout.displayFacesMessage("Success", "Request sent successfully", FacesMessage.SEVERITY_INFO);
     }
 
     public void commitTransfer() {
 
         if (paymentService.pay(currentUser.getUsername(), selectedUser.getUsername(), amount)) {
-            this.displayFacesMessage("Success", "Transaction completed successfully", FacesMessage.SEVERITY_INFO);
+            this.layout.displayFacesMessage("Success", "Transaction completed successfully", FacesMessage.SEVERITY_INFO);
         } else {
-            this.displayFacesMessage("Failure", "Transaction failed to complete!", FacesMessage.SEVERITY_ERROR);
+            this.layout.displayFacesMessage("Failure", "Transaction failed to complete!", FacesMessage.SEVERITY_ERROR);
         }
     }
 
@@ -84,10 +84,7 @@ public class TransferMoneyBean implements Serializable {
         layout.setLoading(false); // Stop indicator
     }
 
-    private void displayFacesMessage(String title, String description, FacesMessage.Severity severity) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(severity, title, description));
-    }
+
 
     public SystemUserDto getCurrentUser() {
         return currentUser;

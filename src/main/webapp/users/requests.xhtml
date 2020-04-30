@@ -25,6 +25,7 @@
 		</p:panelGrid>
 	</ui:define>
 	<ui:define name="content">
+
 		<div class="ui-g">
 			<h4>Approve / Reject transfer requests</h4>
 			<p:progressBar styleClass="ui-g-12" rendered="#{layout.loading}" id="progressBarIndeterminate" style="height:6px;"
@@ -35,7 +36,7 @@
 				<h:outputLabel for="multiple" value="Requests:"  styleClass="ui-g-3"/>
 				<p:selectCheckboxMenu styleClass="ui-g-7" id="multiple" value="#{transferRequestsBean.selectedTransactions}" label="Requests" multiple="true"
 									  filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
-					<f:selectItems var="t" value="#{transferRequestsBean.transactions}" itemLabel="#{t.amount}: #{t.transactionParticipant.username}" />
+					<f:selectItems var="t" value="#{transferRequestsBean.transactions}" itemLabel="#{t.amount}: #{t.transactionOwner.username}" />
 				</p:selectCheckboxMenu>
 				<span class="ui-g-12" />
 				<p:commandButton

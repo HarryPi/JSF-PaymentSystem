@@ -69,8 +69,8 @@ public class TransactionServiceBean implements TransactionService {
     @Override
     public void approveTransactionRequest(List<SystemTransactionDto> transactions) {
         transactions.forEach(transaction -> {
-            SystemUserDto sendUser = userService.getCurrentUser();
-            SystemUserDto receiveUser = userService.findUser(transaction.getTransactionParticipantId());
+            SystemUserDto receiveUser = transaction.getTransactionOwner();
+            SystemUserDto sendUser = userService.findUser(transaction.getTransactionParticipantId());
 
             paymentService.pay(sendUser.getUsername(), receiveUser.getUsername(), transaction.getAmount());
             transactionDao.remove(transaction.asEntity().getId());
@@ -79,7 +79,9 @@ public class TransactionServiceBean implements TransactionService {
 
     @Override
     public void rejectTransactionRequest(List<SystemTransactionDto> transactions) {
-
+        transactions.forEach(transaction -> {
+            transactionDao.remove(transaction.asEntity().getId());
+        });
     }
 
 }

@@ -23,6 +23,7 @@
     </ui:define>
     <ui:define name="content" id="transactionGrid">
         <h:form>
+
             <p:remoteCommand action="#{layout.setLoading(false)}"
                              name="setLoadingFalse"
                              update="progressBarIndeterminate"/>
@@ -50,7 +51,8 @@
                 </div>
                 <p:outputPanel styleClass="p-col-12" id="transaction-tables" style="text-align: center;">
                     <h4 class="p-col-12">Received Transactions</h4>
-                    <p:dataTable styleClass="p-col-10 p-offset-1" id="receivedTransactionsDataTable" var="receivedTransactions"
+                    <p:dataTable styleClass="p-col-10 p-offset-1" id="receivedTransactionsDataTable"
+                                 var="receivedTransactions"
                                  value="#{transactionBean.receivedTransactions}">
                         <p:column headerText="Amount">
                             <p:inputNumber readonly="true"

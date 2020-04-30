@@ -57,8 +57,8 @@ public class PaymentServiceBean implements PaymentService {
 
     @Override
     public void requestMoney(String from, String to, int amount) {
-        SystemUser userFrom = userDao.getUserByEmail(from);
         SystemUser userTo = userDao.getUserByEmail(to);
+        SystemUser userFrom = userDao.getUserByEmail(from);
 
         // Create Transaction to reflect payment
         transactionDao.persist(new SystemTransaction(amount, TransactionStatus.REQUEST, userFrom, userTo.getId()));

@@ -19,7 +19,7 @@ public class SystemTransaction implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private long id;
 
     @NotNull
     private int amount;
@@ -28,11 +28,11 @@ public class SystemTransaction implements Serializable {
     @Enumerated(EnumType.ORDINAL)
     private TransactionStatus status;
 
-    @NotNull
-    @ManyToOne
     /**
      * The account that owns this transaction (i.e the instigator)
      */
+    @NotNull
+    @ManyToOne
     private SystemUser transactionOwner;
 
     /**
@@ -41,10 +41,29 @@ public class SystemTransaction implements Serializable {
     @NotNull
     private long transactionParticipantId;
 
+
     public SystemTransaction() {
     }
 
-    public SystemTransaction(@NotNull int amount, @NotNull TransactionStatus status, @NotNull SystemUser transactionOwner, @NotNull long transactionParticipantId) {
+    public SystemTransaction(
+            @NotNull long id,
+            @NotNull int amount,
+            @NotNull TransactionStatus status,
+            @NotNull SystemUser transactionOwner,
+            @NotNull long transactionParticipantId) {
+        this.id = id;
+        this.amount = amount;
+        this.status = status;
+        this.transactionOwner = transactionOwner;
+        this.transactionParticipantId = transactionParticipantId;
+    }
+
+    public SystemTransaction(
+            @NotNull int amount,
+            @NotNull TransactionStatus status,
+            @NotNull SystemUser transactionOwner,
+            @NotNull long transactionParticipantId
+    ) {
         this.amount = amount;
         this.status = status;
         this.transactionOwner = transactionOwner;
@@ -53,6 +72,7 @@ public class SystemTransaction implements Serializable {
 
     public SystemTransactionDto asDto() {
         return new SystemTransactionDto(
+                this.id,
                 this.amount,
                 this.status,
                 this.transactionOwner.toDto(),
@@ -70,11 +90,11 @@ public class SystemTransaction implements Serializable {
         return dtos;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

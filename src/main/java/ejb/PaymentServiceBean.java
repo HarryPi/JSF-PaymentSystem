@@ -52,7 +52,6 @@ public class PaymentServiceBean implements PaymentService {
 
         // Create Transaction to reflect payment
         transactionDao.persist(new SystemTransaction(amount, TransactionStatus.SENT, userFrom, userTo.getId()));
-        transactionDao.persist(new SystemTransaction(amount, TransactionStatus.RECEIVED, userTo, userFrom.getId()));
         return true;
     }
 
@@ -62,7 +61,6 @@ public class PaymentServiceBean implements PaymentService {
         SystemUser userTo = userDao.getUserByEmail(to);
 
         // Create Transaction to reflect payment
-        transactionDao.persist(new SystemTransaction(amount, TransactionStatus.REQUEST_SENT, userFrom, userTo.getId()));
-        transactionDao.persist(new SystemTransaction(amount, TransactionStatus.REQUEST_RECEIVED, userTo, userFrom.getId()));
+        transactionDao.persist(new SystemTransaction(amount, TransactionStatus.REQUEST, userFrom, userTo.getId()));
     }
 }

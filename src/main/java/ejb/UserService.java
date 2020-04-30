@@ -11,4 +11,6 @@ public interface UserService {
     SystemUserDto getCurrentUser();
     List<SystemUserDto> getAllUsers();
     SystemUserDto findUser(long id);
+    SystemUserDto getByEmail(String email);
+
 }

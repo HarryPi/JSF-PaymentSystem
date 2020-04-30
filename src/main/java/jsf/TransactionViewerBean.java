@@ -18,7 +18,9 @@ import java.util.List;
 @ViewScoped
 public class TransactionViewerBean implements Serializable {
 
-    private List<SystemTransactionDto> transactionsDto;
+    private int noOfPendingRequests;
+    private List<SystemTransactionDto> receivedTransactions;
+    private List<SystemTransactionDto> sentTransactions;
     private String currencySymbol;
 
     @EJB
@@ -36,33 +38,27 @@ public class TransactionViewerBean implements Serializable {
 
     }
 
-    public List<SystemTransactionDto> getTransactionsDto() {
-        return transactionsDto;
-    }
-
-    public void setTransactionsDto(List<SystemTransactionDto> transactionsDto) {
-        this.transactionsDto = transactionsDto;
-    }
 
     /**
      * An event that is fired when the transaction page is loaded
-     * It retrieves the transactions of the user
+     * This is fired from a remote command instead on @PostConstructor so that it can allow the page to load
+     * first then show the user some indication that something is happening on the background
      *
      * @param email The {@link entity.SystemUser} username. If none provided will attempt to get from session
      */
     public void getOnload(String email) {
         System.out.println("Begin Loading transactions...1");
-        if (email.isEmpty()) {
-            // This occures when a refresh happens and we were not redirected from login or register forms
-            // In this case a user already exists in the session
-            // Retrieve that user
-            email = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
-        }
 
         SystemUserDto currentUser = this.userService.getCurrentUser();
-        this.transactionsDto = transactionService.getAllTransactionsForUser(email);
-        this.transactionsDto.forEach(t -> t.setTransactionParticipant(userService.findUser(t.getTransactionParticipantId())));
+
+        this.receivedTransactions = transactionService.getAllReceivedTransactions(currentUser.getId());
+        this.receivedTransactions.forEach(t -> t.setTransactionParticipant(userService.findUser(t.getTransactionParticipantId())));
+
+        this.sentTransactions = transactionService.getAllSentTransactions(currentUser.getId());
+        this.sentTransactions.forEach(t -> t.setTransactionParticipant(userService.findUser(t.getTransactionParticipantId())));
+
         this.currencySymbol = this.currencyService.get(currentUser.getAccount().getCurrency()).getDisplaySymbol();
+        this.noOfPendingRequests = this.transactionService.getNoOfPendingRequestedTransactions(currentUser.getId());
     }
 
     public String getCurrencySymbol() {
@@ -71,5 +67,30 @@ public class TransactionViewerBean implements Serializable {
 
     public void setCurrencySymbol(String currencySymbol) {
         this.currencySymbol = currencySymbol;
+    }
+
+
+    public int getNoOfPendingRequests() {
+        return noOfPendingRequests;
+    }
+
+    public void setNoOfPendingRequests(int noOfPendingRequests) {
+        this.noOfPendingRequests = noOfPendingRequests;
+    }
+
+    public List<SystemTransactionDto> getReceivedTransactions() {
+        return receivedTransactions;
+    }
+
+    public void setReceivedTransactions(List<SystemTransactionDto> receivedTransactions) {
+        this.receivedTransactions = receivedTransactions;
+    }
+
+    public List<SystemTransactionDto> getSentTransactions() {
+        return sentTransactions;
+    }
+
+    public void setSentTransactions(List<SystemTransactionDto> sentTransactions) {
+        this.sentTransactions = sentTransactions;
     }
 }

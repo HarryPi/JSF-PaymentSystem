@@ -35,7 +35,6 @@ public class SystemUser {
 
     @OneToMany(
             mappedBy = "transactionOwner",
-            cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     private List<SystemTransaction> systemTransactions;

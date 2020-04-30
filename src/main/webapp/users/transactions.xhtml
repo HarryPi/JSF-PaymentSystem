@@ -14,8 +14,10 @@
         <p:panelGrid>
             <div class="p-grid p-align-center" style="text-align: center">
                 <p:linkButton outcome="transactions" value="Transactions" class="p-col-12 p-col-align-center"/>
-                <p:linkButton outcome="transferPage" value="Transfer / Request Money" class="p-col-12 p-col-align-center"/>
-                <p:linkButton outcome="requests" value="Approve / Decline requests" class="p-col-12 p-col-align-center"/>
+                <p:linkButton outcome="transferPage" value="Transfer / Request Money"
+                              class="p-col-12 p-col-align-center"/>
+                <p:linkButton outcome="requests" value="Approve / Decline requests"
+                              class="p-col-12 p-col-align-center"/>
             </div>
         </p:panelGrid>
     </ui:define>
@@ -26,7 +28,7 @@
                              update="progressBarIndeterminate"/>
             <p:remoteCommand actionListener="#{transactionBean.getOnload(authentication.getUserDto().username)}"
                              autoRun="true"
-                             update="transactionsDataTable"
+                             update="transaction-tables"
                              oncomplete="setLoadingFalse()"
             />
         </h:form>
@@ -39,28 +41,45 @@
                     <p:progressBar rendered="#{layout.loading}" id="progressBarIndeterminate" style="height:6px;"
                                    mode="indeterminate">
                     </p:progressBar>
+                    <div class="p-offset-2 p-col-8">
+                        <p:staticMessage severity="info"
+                                         summary="Pending Requests"
+                                         detail="You have #{transactionBean.noOfPendingRequests} requests pending
+                                            Click on Approve / Decline requests to see and interact with them"/>
+                    </div>
                 </div>
-                <div class="p-col-1"></div>
-                <p:dataTable styleClass="p-col-10" id="transactionsDataTable" var="transaction" value="#{transactionBean.transactionsDto}">
-                    <p:column headerText="Amount">
-                        <p:inputNumber readonly="true"
-                                       value="#{transaction.amount}"
-                                       symbol="#{transactionBean.currencySymbol}" symbolPosition="s"
-                                       decimalSeparator="," thousandSeparator="."/>
-                    </p:column>
+                <p:outputPanel styleClass="p-col-12" id="transaction-tables" style="text-align: center;">
+                    <h4 class="p-col-12">Received Transactions</h4>
+                    <p:dataTable styleClass="p-col-10 p-offset-1" id="receivedTransactionsDataTable" var="receivedTransactions"
+                                 value="#{transactionBean.receivedTransactions}">
+                        <p:column headerText="Amount">
+                            <p:inputNumber readonly="true"
+                                           value="#{receivedTransactions.amount}"
+                                           symbol="#{transactionBean.currencySymbol}" symbolPosition="s"
+                                           decimalSeparator="," thousandSeparator="."/>
+                        </p:column>
 
-                    <p:column headerText="Type">
-                        <h:outputText rendered="#{transaction.status == 'SENT'}" value="Sent"/>
-                        <h:outputText rendered="#{transaction.status == 'RECEIVED'}" value="Received"/>
-                        <h:outputText rendered="#{transaction.status == 'REQUEST_RECEIVED'}" value="Received pending request"/>
-                        <h:outputText rendered="#{transaction.status == 'REQUEST_SENT'}" value="Sent pending request"/>
-                    </p:column>
+                        <p:column headerText="Participan">
+                            <h:outputText value="#{receivedTransactions.transactionParticipant.username}"/>
+                        </p:column>
+                    </p:dataTable>
 
-                    <p:column headerText="Participan">
-                        <h:outputText value="#{transaction.transactionParticipant.username}" />
-                    </p:column>
-                </p:dataTable>
-                <div class="p-col-1"></div>1
+                    <h4 class="p-col-12">Sent Transactions</h4>
+                    <p:dataTable styleClass="p-col-10 p-offset-1" id="sentTransactionsDataTable" var="transaction"
+                                 value="#{transactionBean.sentTransactions}">
+                        <p:column headerText="Amount">
+                            <p:inputNumber readonly="true"
+                                           value="#{transaction.amount}"
+                                           symbol="#{transactionBean.currencySymbol}" symbolPosition="s"
+                                           decimalSeparator="," thousandSeparator="."/>
+                        </p:column>
+
+                        <p:column headerText="Participan">
+                            <h:outputText value="#{transaction.transactionParticipant.username}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <div class="p-col-1"></div>
+                </p:outputPanel>
             </div>
         </p:fragment>
     </ui:define>

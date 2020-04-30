@@ -3,6 +3,8 @@ package ejb;
 public interface PaymentService {
     /**
      * Makes a payment from a user to another users {@link entity.Account}
+     * It Also generates the appropriate {@link entity.SystemTransaction} to the database
+     *
      * @param from User email to take money from
      * @param to User email to add money to
      * @param amount The amount

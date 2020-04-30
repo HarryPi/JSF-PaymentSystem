@@ -6,7 +6,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class JpaDao<E, K> implements DAO<E, K> {
+public abstract class JpaDao<E , K> implements DAO<E, K> {
     protected Class entityClass;
 
     @PersistenceContext
@@ -22,8 +22,10 @@ public abstract class JpaDao<E, K> implements DAO<E, K> {
         this.entityManager.persist(entity);
     }
 
-    public void remove(E entity) {
-        this.entityManager.remove(entity);
+    public void remove(K id) {
+       E entity = (E) this.entityManager.find(entityClass, id);
+       this.entityManager.remove(entity);
+
     }
 
     public E findById(K id) {

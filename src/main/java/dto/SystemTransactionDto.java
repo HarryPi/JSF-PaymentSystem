@@ -7,7 +7,7 @@ import entity.SystemUser;
 import javax.validation.constraints.NotNull;
 
 public class SystemTransactionDto {
-    private String id;
+    private long id;
 
     private int amount;
 
@@ -35,8 +35,39 @@ public class SystemTransactionDto {
         this.transactionParticipantId = transactionParticipantId;
     }
 
+    public SystemTransactionDto(
+            long id,
+            @NotNull int amount,
+            @NotNull TransactionStatus status,
+            SystemUserDto transactionOwner,
+            @NotNull long transactionParticipantId,
+            @NotNull SystemUserDto transactionParticipant
+    ) {
+        this.id = id;
+        this.amount = amount;
+        this.status = status;
+        this.transactionOwner = transactionOwner;
+        this.transactionParticipantId = transactionParticipantId;
+        this.transactionParticipant = transactionParticipant;
+    }
+
+    public SystemTransactionDto(
+            long id,
+            int amount,
+            TransactionStatus status,
+            SystemUserDto toDto,
+            long transactionParticipantId
+    ) {
+        this.id = id;
+        this.amount = amount;
+        this.status = status;
+        this.transactionOwner = toDto;
+        this.transactionParticipantId = transactionParticipantId;
+    }
+
     public SystemTransaction asEntity() {
         SystemTransaction transaction = new SystemTransaction();
+        transaction.setId(this.id);
         transaction.setAmount(this.amount);
         transaction.setStatus(this.status);
         transaction.setTransactionOwner(this.transactionOwner.asEntity());
@@ -45,11 +76,11 @@ public class SystemTransactionDto {
         return transaction;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

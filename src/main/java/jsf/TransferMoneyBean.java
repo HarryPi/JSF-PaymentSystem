@@ -74,10 +74,7 @@ public class TransferMoneyBean implements Serializable {
         String currentUsersEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
 
         // users will be displayed to current user for transfer options thus the current user should not be displayed
-        currentUser = users.stream()
-                .filter(user -> user.getUsername().equalsIgnoreCase(currentUsersEmail))
-                .findFirst()
-                .orElse(null);
+        currentUser = userService.getCurrentUser();
 
         users.removeIf(user -> user.getUsername().equalsIgnoreCase(currentUsersEmail));
 

@@ -80,6 +80,11 @@ public class UserServiceBean implements UserService {
         return this.userDao.findById(id).toDto();
     }
 
+    @Override
+    public SystemUserDto getByEmail(String email) {
+        return this.userDao.getUserByEmail(email).toDto();
+    }
+
     @PostConstruct
     public void postConstruct() {
         System.out.println("CommentStore: PostConstruct");

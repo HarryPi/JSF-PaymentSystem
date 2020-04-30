@@ -23,5 +23,5 @@ public enum TransactionStatus {
     /**
      * When another user has requested from this user money
      */
-    REQUEST_RECEIVED
+    REQUEST
 }

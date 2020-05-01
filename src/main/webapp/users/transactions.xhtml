@@ -6,7 +6,7 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <f:metadata>
         <f:event type="preRenderComponent" listener="#{layout.showSidebar()}"/>
-        <f:event type="postAddToView" listener="#{layout.setLoading(true)}"/>
+        <f:event type="preValidate" listener="#{layout.setLoading(true)}"/>
     </f:metadata>
 
 
@@ -26,7 +26,7 @@
 
             <p:remoteCommand action="#{layout.setLoading(false)}"
                              name="setLoadingFalse"
-                             update="progressBarIndeterminate"/>
+                             update="progressForm"/>
             <p:remoteCommand actionListener="#{transactionBean.getOnload(authentication.getUserDto().username)}"
                              autoRun="true"
                              update="transaction-tables"
@@ -35,14 +35,16 @@
         </h:form>
 
         <p:fragment>
-            <p:autoUpdate/>
             <div class="p-grid">
                 <div class="p-col-12">
                     <h3>Transactions</h3>
-                    <h5>Balance: #{transactionBean.currencySymbol}#{transactionBean.balance}</h5>
-                    <p:progressBar rendered="#{layout.loading}" id="progressBarIndeterminate" style="height:6px;"
-                                   mode="indeterminate">
-                    </p:progressBar>
+                    <h:form id="progressForm">
+                        <h5>Balance: #{transactionBean.currencySymbol}#{transactionBean.balance}</h5>
+                        <p:progressBar rendered="#{layout.loading}" id="progressBarIndeterminate" style="height:6px;"
+                                       mode="indeterminate">
+                        </p:progressBar>
+                        <p:autoUpdate />
+                    </h:form>
                     <div class="p-offset-2 p-col-8">
                         <p:staticMessage severity="info"
                                          summary="Pending Requests"
@@ -55,7 +57,7 @@
                     <p:dataTable styleClass="p-col-10 p-offset-1" id="receivedTransactionsDataTable"
                                  var="receivedTransactions"
                                  value="#{transactionBean.receivedTransactions}"
-                                 rows="10"
+                                 rows="5"
                                  paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
@@ -76,7 +78,7 @@
                     <h4 class="p-col-12">Sent Transactions</h4>
                     <p:dataTable styleClass="p-col-10 p-offset-1" id="sentTransactionsDataTable" var="transaction"
                                  value="#{transactionBean.sentTransactions}"
-                                 rows="10"
+                                 rows="5"
                                  paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"

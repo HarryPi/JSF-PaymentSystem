@@ -7,12 +7,10 @@ import ejb.TransactionService;
 import ejb.UserService;
 
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.util.List;
 
 @Named(value = "transactionBean")
@@ -64,7 +62,7 @@ public class TransactionViewerBean implements Serializable {
         this.noOfPendingRequests = this.transactionService.getNoOfPendingRequestedTransactions(currentUser.getId());
         
         this.setBalance(currentUser.getAccount().getBalance());
-        
+        this.layout.setLoading(false);
     }
 
     public String getCurrencySymbol() {

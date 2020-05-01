@@ -4,10 +4,8 @@ import dto.SystemUserDto;
 import ejb.CurrencyService;
 import ejb.PaymentService;
 import ejb.UserService;
-import entity.SystemUser;
 
 import javax.ejb.EJB;
-import javax.el.MethodExpression;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -16,6 +14,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 
 @Named(value = "transfer")
 @SessionScoped
@@ -45,6 +44,9 @@ public class TransferMoneyBean implements Serializable {
     public void requestMoney() {
         paymentService.requestMoney(currentUser.getUsername(), selectedUser.getUsername(), amount);
         this.layout.displayFacesMessage("Success", "Request sent successfully", FacesMessage.SEVERITY_INFO);
+        this.selectedUser = new SystemUserDto();
+        this.users = new ArrayList<>();
+        this.amount = 0;
     }
 
     public void commitTransfer() {

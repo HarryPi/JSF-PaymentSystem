@@ -6,16 +6,15 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
     <f:metadata>
-        <f:event type="postAddToView" listener="#{layout.showSidebar()}"/>
-        <f:event type="postAddToView" listener="#{layout.setLoading(true)}"/>
+        <f:event type="preValidate" listener="#{layout.showSidebar()}"/>
+        <f:event type="preValidate" listener="#{layout.setLoading(true)}"/>
+        <f:event type="preValidate" listener="#{transfer.loadAllUsers()}"/>
     </f:metadata>
 
 
     <ui:define name="sidebar">
         <h:form>
-            <p:remoteCommand actionListener="#{transfer.loadAllUsers()}"
-                             update="transferForm"
-                             autoRun="true"/>
+            <!--<p:remoteCommand actionListener="#{transfer.loadAllUsers()}" autoRun="true"/>-->
             <p:remoteCommand action="#{layout.setLoading(false)}"
                              name="setLoadingFalse"
                              update="progressBarIndeterminate"/>
@@ -33,55 +32,67 @@
     </ui:define>
 
     <ui:define name="content">
+        <p:panelGrid layout="flex" columns="1" styleClass="ui-panelgrid-blank" id="progressBarIndeterminate">
+            <p:progressBar rendered="#{layout.loading}" style="height:6px;"
+                           mode="indeterminate">
+                <p:autoUpdate/>
 
+            </p:progressBar>
+        </p:panelGrid>
+        <h:form>
+            <p:messages closable="true" showDetail="true" id="loginErrorMsg" >
+                <p:autoUpdate />
+            </p:messages>
+        </h:form>
         <div class="p-grid" style="width: 95%">
             <div class="p-col-12">
                 <h3>Trasnfers</h3>
-                <p:panelGrid layout="flex" columns="1" styleClass="ui-panelgrid-blank" id="progressBarIndeterminate">
-                    <p:progressBar rendered="#{layout.loading}" style="height:6px;"
-                                   mode="indeterminate">
-                    </p:progressBar>
-                    <p:autoUpdate/>
-                </p:panelGrid>
+                <p:separator />
                 <h:form id="transferForm" class="p-grid p-col-12">
-                    <p:growl id="growl" showDetail="true" sticky="true" life="3500"/>
-                    <p:autoUpdate/>
-                    <p:outputLabel styleClass="p-col-3" for="@next" value="Transfer to"/>
-                    <p:selectOneMenu styleClass="p-col-9"
-                                     value="#{transfer.selectedUser}"
-                                     id="transferToUsers"
-                    >
-                        <f:selectItems value="#{transfer.users}" var="user" itemLabel="#{user.username} "/>
-                    </p:selectOneMenu>
+                    <p:panel class="p-col-12">
+                        <p:outputLabel styleClass="p-col-3" for="@next" value="Transfer to"/>
+                        <span class="p-col-1"></span>
+                        <p:selectOneMenu required="true"
+                                         id="transferToUsers"
+                                         styleClass="p-col-9"
+                                         value="#{transfer.selectedUser}">
+                            <f:selectItems value="#{transfer.users}" var="user" itemLabel="#{user.username} "/>
+                        </p:selectOneMenu>
+                        <p:message style="margin-left: 1%" for="transferToUsers" />
+                    </p:panel>
 
-                    <p:outputLabel for="@next" value="Ammount" styleClass="p-col-3"/>
-                    <p:inputNumber styleClass="p-col-9" id="currency" value="#{transfer.amount}"
-                                   symbol="#{transfer.getUsersPreferredCurrency()}" symbolPosition="s"
-                                   decimalSeparator="," thousandSeparator="."/>
+                    <div class="p-col-12">
+                        <p:outputLabel for="@next" value="Ammount" styleClass="p-col-3"/>
+                        <span class="p-col-1"></span>
+                        <p:inputNumber validator="transferValidator" required="true" styleClass="p-col-7" id="currency" value="#{transfer.amount}"
+                                       symbol="#{transfer.getUsersPreferredCurrency()}" symbolPosition="s"
+                                       decimalSeparator="," thousandSeparator="."
+                                       >
+                        </p:inputNumber>
+                        <p:message style="margin-left: 1%" for="currency" />
+                    </div>
 
-                    <p:outputLabel for="@next" value="Your remaining balance: " styleClass="p-col-3"/>
-                    <p:inputNumber readonly="true" styleClass="p-col-9" id="balance"
-                                   value="#{transfer.currentUser.account.balance}"
-                                   symbol="#{transfer.getUsersPreferredCurrency()}" symbolPosition="s"
-                                   decimalSeparator="," thousandSeparator="."/>
+                    <div class="p-col-12"> 
+                        <p:outputLabel for="@next" value="Your remaining balance: " styleClass="p-col-3"/>
+                        <p:inputNumber readonly="true" styleClass="p-col-9" id="balance"
+                                       value="#{transfer.currentUser.account.balance}"
+                                       symbol="#{transfer.getUsersPreferredCurrency()}" symbolPosition="s"
+                                       decimalSeparator="," thousandSeparator="."/>
+                    </div>
 
                     <p:commandButton
-                            process="@this, transferForm"
-                            onstart="setLoadingTrue()"
-                            oncomplete="setLoadingFalse()"
-                            value="Trasnfer"
-                            ajax="false"
-                            update="transferForm"
-                            action="#{transfer.commitTransfer()}"/>
+                        onstart="setLoadingTrue()"
+                        oncomplete="setLoadingFalse()"
+                        value="Trasnfer"
+                        ajax="false"
+                        action="#{transfer.commitTransfer()}"/>
 
                     <p:commandButton
-                            process="@this, transferForm"
-                            onstart="setLoadingTrue()"
-                            oncomplete="setLoadingFalse()"
-                            value="Request"
-                            ajax="false"
-                            update="transferForm"
-                            action="#{transfer.requestMoney()}"/>
+                        onstart="setLoadingTrue()"
+                        oncomplete="setLoadingFalse()"
+                        value="Request"
+                        ajax="false"
+                        action="#{transfer.requestMoney()}"/>
                 </h:form>
             </div>
         </div>

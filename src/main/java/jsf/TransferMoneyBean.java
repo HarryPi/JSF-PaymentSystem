@@ -54,7 +54,7 @@ public class TransferMoneyBean implements Serializable {
         if (paymentService.pay(currentUser.getUsername(), selectedUser.getUsername(), amount)) {
             this.layout.displayFacesMessage("Success", "Transaction completed successfully", FacesMessage.SEVERITY_INFO);
         } else {
-            this.layout.displayFacesMessage("Failure", "Transaction failed to complete!", FacesMessage.SEVERITY_ERROR);
+            this.layout.displayFacesMessage("Failure", "Transaction failed to complete, insuffucient money!", FacesMessage.SEVERITY_ERROR);
         }
         
         // Current user is before commit so get modified user from service

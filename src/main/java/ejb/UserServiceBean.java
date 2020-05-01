@@ -125,11 +125,18 @@ public class UserServiceBean implements UserService {
     @Override
     @RolesAllowed("admins")
     @Transactional(Transactional.TxType.REQUIRED)
-    public void registerAdmin(SystemUserDto user) {
+    public void registerAdmin(SystemUserDto user) throws EmailAlreadyExistsException {
+          // Check if email already exists in db
+        SystemUser userInDb = userDao.getUserByEmail(user.getUsername()).orElse(null);
+        
+        if (userInDb != null) {
+            throw new EmailAlreadyExistsException("This email already exists");
+        }
+        
         SystemUserGroup userGroup = new SystemUserGroup(user.asEntity(), user.getUsername(), "admins");
-
+        
+        user.setUserGroup(userGroup);
         userDao.persist(user.asEntity()); // No need to persist account as it is already attached to user
-        userGroupDao.persist(userGroup);
     }
 
     @Override

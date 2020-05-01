@@ -16,8 +16,8 @@
                 <p:linkButton outcome="dashboard" value="All users" class="p-col-12 p-col-align-center"/>
                 <p:linkButton outcome="userTransactions" value="See user transactions"
                               class="p-col-12 p-col-align-center"/>
-<!--                <p:linkButton outcome="addAdmin" value="Add Administrator"
-                              class="p-col-12 p-col-align-center"/>-->
+                <p:linkButton outcome="addAdmin" value="Add Administrator"
+                              class="p-col-12 p-col-align-center"/>
             </div>
         </p:panelGrid>
     </ui:define>
@@ -61,7 +61,7 @@
                             <h:outputText rendered="#{user.account.balance != null}" value="#{currency.get(user.account.currency).displaySymbol}#{user.account.balance}"/>
                             <h:outputText rendered="#{user.account.balance == null}" value="Admin Account"/>
                         </p:column>
-                        
+
                         <p:column headerText="Full name">
                             <h:outputText value="#{user.name} #{user.surname}"/>
                         </p:column>

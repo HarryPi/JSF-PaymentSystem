@@ -13,11 +13,11 @@
     <ui:define name="sidebar">
         <p:panelGrid>
             <div class="p-grid p-align-center" style="text-align: center">
-               <p:linkButton outcome="dashboard" value="All users" class="p-col-12 p-col-align-center"/>
+                <p:linkButton outcome="dashboard" value="All users" class="p-col-12 p-col-align-center"/>
                 <p:linkButton outcome="userTransactions" value="See user transactions"
                               class="p-col-12 p-col-align-center"/>
-<!--                <p:linkButton outcome="addAdmin" value="Add Administrator"
-                              class="p-col-12 p-col-align-center"/>-->
+                <p:linkButton outcome="addAdmin" value="Add Administrator"
+                              class="p-col-12 p-col-align-center"/>
             </div>
         </p:panelGrid>
     </ui:define>
@@ -39,7 +39,7 @@
             <div class="p-grid">
                 <div class="p-col-12">
                     <h3>Transactions</h3>
-                    <h5>Balance: #{transactionBean.currencySymbol}#{transactionBean.balance}</h5>
+                    <h5>Balance: #{adminTransactions.currencySymbol}#{adminTransactions.balance}</h5>
                     <p:progressBar rendered="#{layout.loading}" id="progressBarIndeterminate" style="height:6px;"
                                    mode="indeterminate">
                     </p:progressBar>
@@ -47,15 +47,18 @@
                 <p:outputPanel styleClass="p-col-12" id="transaction-tables" style="text-align: center;">
                     <h:form> 
                         <p:autoUpdate/>
-                        <p:outputLabel styleClass="p-col-3" for="@next" value="See transactions of"/>
-                        <p:selectOneMenu styleClass="p-col-9"
-                                         value="#{adminTransactions.selectedUser}"
-                                         id="transactionUsers"
-                                         >
-                            <f:selectItems value="#{adminTransactions.allSimpleUsers}" var="user" itemLabel="#{user.username} "/>
-                        </p:selectOneMenu>
+                        <div class="p-col-12"> 
+                            <p:outputLabel styleClass="p-col-3" for="@next" value="See transactions of"/>
+                            <p:selectOneMenu styleClass="p-col-9"
+                                             value="#{adminTransactions.selectedUser}"
+                                             id="transactionUsers"
+                                             >
+                                <f:selectItems value="#{adminTransactions.allSimpleUsers}" var="user" itemLabel="#{user.username} "/>
+                            </p:selectOneMenu>
+                        </div>
 
                         <p:commandButton
+                            class="p-col-3"
                             process="@this"
                             onstart="setLoadingTrue()"
                             oncomplete="setLoadingFalse()"

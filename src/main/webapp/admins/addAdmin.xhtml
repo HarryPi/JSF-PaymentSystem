@@ -1,0 +1,47 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:define name="sidebar">
+        <p:panelGrid>
+            <div class="p-grid p-align-center" style="text-align: center">
+                <p:linkButton outcome="dashboard" value="All users" class="p-col-12 p-col-align-center"/>
+                <p:linkButton outcome="userTransactions" value="See user transactions"
+                              class="p-col-12 p-col-align-center"/>
+                <p:linkButton outcome="addAdmin" value="Add Administrator"
+                              class="p-col-12 p-col-align-center"/>
+            </div>
+        </p:panelGrid>
+    </ui:define>
+    <ui:define name="content">
+        <div class="ui-fluid">
+            <h3>Register new admin</h3>
+            <h:form id="registerForm">
+                <p:growl id="growl" showDetail="true" sticky="true" life="3500"/>
+                <p:panelGrid id="registerPanel" columnClasses="ui-g-2 ui-g-2" columns="2" layout="grid"
+                             styleClass="ui-panelgrid-blank ui-fluid">
+                    <p:outputLabel for="email" value="Email"/>
+                    <p:inputText id="email" value="#{authentication.getUserDto().username}"/>
+
+                    <p:outputLabel for="password" value="Password"/>
+                    <p:inputText id="password" value="#{authentication.getUserDto().userpassword}"/>
+
+                    <p:outputLabel for="name" value="First Name"/>
+                    <p:inputText id="name" value="#{authentication.getUserDto().name}"/>
+
+                    <p:outputLabel for="lastName" value="Last Name"/>
+                    <p:inputText id="lastName" value="#{authentication.getUserDto().surname}"/>
+
+                    <p:panelGrid columns="2">
+                        <p:commandButton ajax="false" action="#{authentication.registerAdmin}" value="Submit!"/>
+                        <p:commandButton update="registerPanel" process="@this" value="Clear">
+                            <p:resetInput target="registerPanel"/>
+                        </p:commandButton>
+                    </p:panelGrid>
+                </p:panelGrid>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

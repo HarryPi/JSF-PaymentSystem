@@ -13,7 +13,7 @@ public interface UserService {
      *
      * @param user Admin to add {@link SystemUserDto}
      */
-    void registerAdmin(SystemUserDto user);
+    void registerAdmin(SystemUserDto user) throws EmailAlreadyExistsException;;
 
     /**
      * Registers a user as simple user

@@ -21,11 +21,11 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import javax.faces.annotation.ManagedProperty;
 import javax.faces.application.FacesMessage;
+import javax.faces.view.ViewScoped;
 
 @Named("authentication")
-@SessionScoped
+@ViewScoped
 public class AuthBean implements Serializable {
 
     private String currency;
@@ -84,6 +84,32 @@ public class AuthBean implements Serializable {
         }
 
         return "/users/transactions.xhtml?faces-redirect=true";
+    }
+
+    public String registerAdmin() {
+        try {
+            String hashedPassword = this.encodePassword(); // Get encoded password
+
+            // Get currency and convert if necessary
+            // todo: Convert currency via rest
+            SystemUserDto user = this.userDto;
+            user.setUserpassword(hashedPassword);
+
+            try {
+                userService.registerAdmin(user);
+            } catch (EmailAlreadyExistsException e) {
+                layout.displayFacesMessage("Failed to register", "Email already exists!", FacesMessage.SEVERITY_ERROR);
+                return null;
+
+            }
+
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+
+        layout.displayFacesMessage("Sucess", "Admin registered!", FacesMessage.SEVERITY_INFO);
+        this.userDto = new SystemUserDto();
+        return null;
     }
 
     public String register() {

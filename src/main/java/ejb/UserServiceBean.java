@@ -98,6 +98,7 @@ public class UserServiceBean implements UserService {
      * @return A List of {@link SystemUserDto}
      */
     @Override
+    @RolesAllowed("admins")
     public List<SystemUserDto> getAllUsers() {
         return SystemUser.toDto(userDao.getAll());
     }
@@ -152,6 +153,7 @@ public class UserServiceBean implements UserService {
     }
 
     @Override
+    @RolesAllowed("admins")
     public List<SystemUserDto> getAllAdminUsers() {
         return SystemUser.toDto(userDao.getAllAdminUsers());
     }

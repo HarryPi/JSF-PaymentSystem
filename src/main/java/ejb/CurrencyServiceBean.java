@@ -7,11 +7,13 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 
 @Named("currency")
+@RolesAllowed({"users", "admins"})
 @ApplicationScoped
 public class CurrencyServiceBean implements CurrencyService {
 

@@ -6,6 +6,7 @@ import dao.systemuser.SystemUserDao;
 import entity.Account;
 import entity.SystemTransaction;
 import entity.SystemUser;
+import javax.annotation.security.RolesAllowed;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -13,6 +14,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 @Stateless
+@RolesAllowed({"users", "admins"})
 public class PaymentServiceBean implements PaymentService {
 
     @EJB

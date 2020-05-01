@@ -58,8 +58,7 @@
                         </p:column>
 
                         <p:column headerText="Balance">
-                            <h:outputText rendered="#{user.account.balance != null}" value="#{currency.get(user.account.currency).displaySymbol}#{user.account.balance}"/>
-                            <h:outputText rendered="#{user.account.balance == null}" value="Admin Account"/>
+                            <h:outputText rendered="#{user.account.balance != null}" value="#{currency.get(user.account.currency).displaySymbol} #{dashboard.prettifyBalance(user.account.balance)}" />                            <h:outputText rendered="#{user.account.balance == null}" value="Admin Account"/>
                         </p:column>
 
                         <p:column headerText="Full name">

@@ -10,8 +10,10 @@ import javax.ejb.Stateless;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.security.RolesAllowed;
 
 @Stateless
+@RolesAllowed({"users", "admins"})
 public class TransactionServiceBean implements TransactionService {
 
     @EJB

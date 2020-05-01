@@ -6,7 +6,7 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <f:metadata>
         <f:event type="preRenderComponent" listener="#{layout.showSidebar()}"/>
-        <f:event type="postAddToView" listener="#{layout.setLoading(true)}"/>
+        <f:event type="preValidate" listener="#{layout.setLoading(true)}"/>
     </f:metadata>
 
 
@@ -26,7 +26,7 @@
 
             <p:remoteCommand action="#{layout.setLoading(false)}"
                              name="setLoadingFalse"
-                             update="progressBarIndeterminate"/>
+                             update="progressForm"/>
             <p:remoteCommand actionListener="#{adminTransactions.onLoad()}"
                              autoRun="true"
                              update="transaction-tables"
@@ -35,18 +35,19 @@
         </h:form>
 
         <p:fragment>
-            <p:autoUpdate/>
             <div class="p-grid">
                 <div class="p-col-12">
                     <h3>Transactions</h3>
                     <h5>Balance: #{adminTransactions.currencySymbol}#{adminTransactions.balance}</h5>
-                    <p:progressBar rendered="#{layout.loading}" id="progressBarIndeterminate" style="height:6px;"
-                                   mode="indeterminate">
-                    </p:progressBar>
+                    <h:form id="progressForm">
+                        <p:progressBar rendered="#{layout.loading}" id="progressBarIndeterminate" style="height:6px;"
+                                       mode="indeterminate">
+                        </p:progressBar>
+                        <p:autoUpdate />
+                    </h:form>
                 </div>
                 <p:outputPanel styleClass="p-col-12" id="transaction-tables" style="text-align: center;">
                     <h:form> 
-                        <p:autoUpdate/>
                         <div class="p-col-12"> 
                             <p:outputLabel styleClass="p-col-3" for="@next" value="See transactions of"/>
                             <p:selectOneMenu styleClass="p-col-9"
@@ -59,12 +60,10 @@
 
                         <p:commandButton
                             class="p-col-3"
-                            process="@this"
                             onstart="setLoadingTrue()"
                             oncomplete="setLoadingFalse()"
                             value="See Transactions"
                             ajax="false"
-                            update="receivedTransactionsDataTable, sentTransactionsDataTable"
                             action="#{adminTransactions.seeTransactionsOfUser()}"/>
                     </h:form>
 
@@ -73,7 +72,7 @@
                     <p:dataTable styleClass="p-col-10 p-offset-1" id="receivedTransactionsDataTable"
                                  var="receivedTransactions"
                                  value="#{adminTransactions.receivedTransactions}"
-                                 rows="10"
+                                 rows="5"
                                  paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
@@ -95,7 +94,7 @@
                     <p:dataTable styleClass="p-col-10 p-offset-1" id="sentTransactionsDataTable"
                                  var="transaction"
                                  value="#{adminTransactions.sentTransactions}"
-                                 rows="10"
+                                 rows="5"
                                  paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"

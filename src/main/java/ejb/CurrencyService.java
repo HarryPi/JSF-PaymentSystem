@@ -16,5 +16,10 @@ public interface CurrencyService {
      * @return returns the converted amount
      */
     double convertToCurrency(String from, String to, double amount);
+    /**
+     * Converts a currency string to a {@link Currency} model
+     * @param currencyType
+     * @return  {@link Currency}
+     */
     Currency get(String currencyType);
 }

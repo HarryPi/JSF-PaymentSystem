@@ -8,14 +8,10 @@ package jsf;
 import java.util.List;
 import javax.inject.Named;
 import dto.SystemUserDto;
-import ejb.CurrencyService;
 import ejb.UserService;
 import java.io.Serializable;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
-
 
 /**
  *
@@ -23,21 +19,27 @@ import javax.inject.Inject;
  */
 @Named(value = "dashboard")
 @ViewScoped
-public class AdminDashboardBean implements Serializable{
+public class AdminDashboardBean implements Serializable {
 
-    private List<SystemUserDto> allUsers; 
-    
+    private List<SystemUserDto> allUsers;
+
     @EJB
     UserService userService;
-    
- 
+
     /**
      * Creates a new instance of AdminDashboardBean
      */
     public AdminDashboardBean() {
     }
-    
-    
+
+    public double prettifyBalance(double balance) {
+        System.err.println(balance);
+        double a = Math.floor(balance * 100) / 100;
+        System.err.println(a);
+        return a;
+
+    }
+
     public void onLoad() {
         this.allUsers = this.userService.getAllUsers();
     }
@@ -50,5 +52,4 @@ public class AdminDashboardBean implements Serializable{
         this.allUsers = allUsers;
     }
 
-    
 }

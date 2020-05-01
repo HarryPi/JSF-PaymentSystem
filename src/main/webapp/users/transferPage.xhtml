@@ -49,7 +49,7 @@
                 <h3>Trasnfers</h3>
                 <p:separator />
                 <h:form id="transferForm" class="p-grid p-col-12">
-                    <p:panel class="p-col-12">
+                    <p:outputPanel class="p-col-12">
                         <p:outputLabel styleClass="p-col-3" for="@next" value="Transfer to"/>
                         <span class="p-col-1"></span>
                         <p:selectOneMenu required="true"
@@ -59,7 +59,7 @@
                             <f:selectItems value="#{transfer.users}" var="user" itemLabel="#{user.username} "/>
                         </p:selectOneMenu>
                         <p:message style="margin-left: 1%" for="transferToUsers" />
-                    </p:panel>
+                    </p:outputPanel>
 
                     <div class="p-col-12">
                         <p:outputLabel for="@next" value="Ammount" styleClass="p-col-3"/>

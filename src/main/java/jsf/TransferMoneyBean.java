@@ -59,6 +59,7 @@ public class TransferMoneyBean implements Serializable {
         
         // Current user is before commit so get modified user from service
         SystemUserDto modifiedUser = this.userService.getCurrentUser();
+        this.amount = 0;
     }
 
     public String getSymbolForUsersPreferredCurrency() {

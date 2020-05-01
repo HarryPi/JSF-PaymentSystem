@@ -5,26 +5,37 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:define name="content">
-        <div class="ui-fluid">
-            <h3>Please register</h3>
-            <h:form id="registerForm">
-                <p:growl id="growl" showDetail="true" sticky="true" life="3500"/>
-                <p:panelGrid id="registerPanel" columnClasses="ui-g-2 ui-g-2" columns="2" layout="grid"
-                             styleClass="ui-panelgrid-blank ui-fluid">
-                    <p:outputLabel for="email" value="Email"/>
-                    <p:inputText id="email" value="#{authentication.getUserDto().username}"/>
+        <div class="ui-g">
+            <h3 class="ui-g-12">Please register</h3>
+            <h:form class="ui-g-12" id="registerForm">
 
-                    <p:outputLabel for="password" value="Password"/>
-                    <p:inputText id="password" value="#{authentication.getUserDto().userpassword}"/>
+                <div class="ui-g-12">
+                    <p:outputLabel class="ui-g-2" for="email" value="Email"/>
+                    <p:inputText class="ui-g-6" validator="emailVal" required="true" id="email" value="#{authentication.getUserDto().username}"/>
+                    <p:message for="email" class="ui-g-4" />
+                </div>
 
-                    <p:outputLabel for="name" value="First Name"/>
-                    <p:inputText id="name" value="#{authentication.getUserDto().name}"/>
+                <div class="ui-g-12">
+                    <p:outputLabel class="ui-g-2" for="password" value="Password"/>
+                    <p:inputText class="ui-g-6" required="true" type="password" id="password" value="#{authentication.getUserDto().userpassword}"/>
+                    <p:message for="password" class="ui-g-4"/>
+                </div>
 
-                    <p:outputLabel for="lastName" value="Last Name"/>
-                    <p:inputText id="lastName" value="#{authentication.getUserDto().surname}"/>
+                <div class="ui-g-12">
+                    <p:outputLabel class="ui-g-2" for="name" value="First Name"/>
+                    <p:inputText class="ui-g-6" required="true" id="name" value="#{authentication.getUserDto().name}"/>
+                    <p:message for="password" class="ui-g-4"/>
+                </div>
 
-                    <p:outputLabel for="@next" value="Currency"/>
-                    <p:selectOneMenu id="currencySelector" value="#{authentication.currency}">
+                <div class="ui-g-12">
+                    <p:outputLabel class="ui-g-2" for="lastName" value="Last Name"/>
+                    <p:inputText required="true" class="ui-g-6" id="lastName" value="#{authentication.getUserDto().surname}"/>
+                    <p:message for="password" class="ui-g-4"/>
+                </div>
+
+                <div class="ui-g-12">
+                    <p:outputLabel class="ui-g-2" for="@next" value="Currency"/>
+                    <p:selectOneMenu class="ui-g-6" id="currencySelector" value="#{authentication.currency}">
                         <f:selectItems value="#{authentication.currencies}"
                                        var="cur"
                                        itemLabel="#{cur.displayName}"
@@ -34,13 +45,14 @@
                             <h:outputText value="Available Currnecies" style="font-weight:bold;"/>
                         </f:facet>
                     </p:selectOneMenu>
-                    <p:panelGrid columns="2">
-                        <p:commandButton ajax="false" action="#{authentication.register}" value="Submit!"/>
-                        <p:commandButton update="registerPanel" process="@this" value="Clear">
-                            <p:resetInput target="registerPanel"/>
-                        </p:commandButton>
-                    </p:panelGrid>
-                </p:panelGrid>
+                    <p:message class="ui-g-4" for="currencySelector" />
+                </div>
+                <div class="ui-g-12">
+                    <p:commandButton class="ui-g-2" ajax="false" action="#{authentication.register}" value="Submit!"/>
+                    <p:commandButton class="ui-g-2" update="registerForm" process="@this" value="Clear">
+                        <p:resetInput target="registerForm"/>
+                    </p:commandButton>
+                </div>
             </h:form>
         </div>
     </ui:define>

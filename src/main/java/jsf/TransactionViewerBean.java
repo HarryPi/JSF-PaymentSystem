@@ -31,7 +31,7 @@ public class TransactionViewerBean implements Serializable {
 
     @Inject
     LayoutControllerBean layout;
-    
+
     @Inject
     CurrencyService currencyService;
 
@@ -39,13 +39,14 @@ public class TransactionViewerBean implements Serializable {
 
     }
 
-
     /**
-     * An event that is fired when the transaction page is loaded
-     * This is fired from a remote command instead on @PostConstructor so that it can allow the page to load
-     * first then show the user some indication that something is happening on the background
+     * An event that is fired when the transaction page is loaded This is fired
+     * from a remote command instead on @PostConstructor so that it can allow
+     * the page to load first then show the user some indication that something
+     * is happening on the background
      *
-     * @param email The {@link entity.SystemUser} username. If none provided will attempt to get from session
+     * @param email The {@link entity.SystemUser} username. If none provided
+     * will attempt to get from session
      */
     public void getOnload(String email) {
         System.out.println("Begin Loading transactions...1");
@@ -53,14 +54,18 @@ public class TransactionViewerBean implements Serializable {
         SystemUserDto currentUser = this.userService.getCurrentUser();
 
         this.receivedTransactions = transactionService.getAllReceivedTransactions(currentUser.getId());
-        this.receivedTransactions.forEach(t -> t.setTransactionParticipant(userService.findUser(t.getTransactionParticipantId()).asEntity()));
+        if (this.receivedTransactions != null && !this.receivedTransactions.isEmpty()) {
+            this.receivedTransactions.forEach(t -> t.setTransactionParticipant(userService.findUser(t.getTransactionParticipantId()).asEntity()));
+        }
 
         this.sentTransactions = transactionService.getAllSentTransactions(currentUser.getId());
-        this.sentTransactions.forEach(t -> t.setTransactionParticipant(userService.findUser(t.getTransactionParticipantId()).asEntity()));
+        if (this.sentTransactions != null && !this.sentTransactions.isEmpty()) {
+            this.sentTransactions.forEach(t -> t.setTransactionParticipant(userService.findUser(t.getTransactionParticipantId()).asEntity()));
+        }
 
         this.currencySymbol = this.currencyService.get(currentUser.getAccount().getCurrency()).getDisplaySymbol();
         this.noOfPendingRequests = this.transactionService.getNoOfPendingRequestedTransactions(currentUser.getId());
-        
+
         this.setBalance(currentUser.getAccount().getBalance());
         this.layout.setLoading(false);
     }
@@ -72,7 +77,6 @@ public class TransactionViewerBean implements Serializable {
     public void setCurrencySymbol(String currencySymbol) {
         this.currencySymbol = currencySymbol;
     }
-
 
     public int getNoOfPendingRequests() {
         return noOfPendingRequests;
@@ -105,6 +109,5 @@ public class TransactionViewerBean implements Serializable {
     public void setBalance(double balance) {
         this.balance = balance;
     }
-    
-    
+
 }

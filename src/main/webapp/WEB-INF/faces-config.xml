@@ -22,20 +22,199 @@
 <faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
-	<navigation-rule>
-		<from-view-id>/index.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>user</from-outcome>
-			<to-view-id>/users/transactions.xhtml</to-view-id>
-			<redirect></redirect>
-		</navigation-case>
-	</navigation-rule>
-	<navigation-rule>
-		<from-view-id>/users/transactions.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>index</from-outcome>
-			<to-view-id>/index.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
+    <!--Index.xhtm-->
+    <navigation-rule>
+        <from-view-id>/index.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>login</from-outcome>
+            <to-view-id>/authenticate/login.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/index.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>register</from-outcome>
+            <to-view-id>/authenticate/register.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+    </navigation-rule>
+    
+    <!--Any View (*) -->
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        
+        <navigation-case>
+            <from-outcome>LOGOUT</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+       
+    </navigation-rule>
+    
+    <!--Login.xhtm-->
+    <navigation-rule>
+        <from-view-id>authenticate/login.xhtml</from-view-id>
+        
+        <navigation-case>
+            <from-action>#{authentication.login}</from-action>
+            <from-outcome>LOG_IN_SUCCESS</from-outcome>
+            <to-view-id>/users/transactions.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+       
+        <navigation-case>
+            <from-action>#{authentication.login}</from-action>
+            <from-outcome>LOG_IN_FAILURE</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-action>#{authentication.login}</from-action>
+            <from-outcome>ADMIN</from-outcome>
+            <to-view-id>/admins/dashboard.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+    </navigation-rule>
+    
+    <!--register.xhtml> -->
+        
+    <navigation-rule>
+        <from-view-id>authenticate/register.xhtml</from-view-id>
+        
+        <navigation-case>
+            <from-action>#{authentication.register}</from-action>
+            <from-outcome>REGISTER_SUCCESS</from-outcome>
+            <to-view-id>/users/transactions.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+       
+        <navigation-case>
+            <from-action>#{authentication.register}</from-action>
+            <from-outcome>REGISTER_FAILURE</from-outcome>
+            <to-view-id>/authenticate/register.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+        
+    </navigation-rule>
+    
+    <!-- From anu /users/* pages -->
+    <navigation-rule>
+        <from-view-id>users/*</from-view-id>
+        
+        <navigation-case>
+            <from-outcome>USER_TRANSACTIONS</from-outcome>
+            <to-view-id>/users/transactions.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>USER_TRANSFERS</from-outcome>
+            <to-view-id>/users/transferPage.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>USER_REQUESTS</from-outcome>
+            <to-view-id>/users/requests.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+    </navigation-rule>
+    
+    <!-- From anu /users/* pages -->
+    <navigation-rule>
+        <from-view-id>users/requests.xhtml</from-view-id>
+        
+        <navigation-case>
+            <from-action>#{transferRequestsBean.approveSelected}</from-action>
+            <to-view-id>/users/requests.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+      
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>users/requests.xhtml</from-view-id>
+        
+        <navigation-case>
+            <from-action>#{transferRequestsBean.rejectSelected}</from-action>
+            <to-view-id>/users/requests.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+      
+    </navigation-rule>
+    
+        <!-- From users specific pages -->
+    <navigation-rule>
+        <from-view-id>users/transferPage.xhtml</from-view-id>
+        
+        <navigation-case>
+            <from-action>#{transfer.commitTransfer}</from-action>
+            <to-view-id>/users/transferPage.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+      
+        <navigation-case>
+            <from-action>#{transfer.requestMoney}</from-action>
+            <to-view-id>/users/transferPage.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+      
+    </navigation-rule>
+    
+    <!-- ADMIN GENERAL -->
+    <navigation-rule>
+        <from-view-id>admins/*</from-view-id>
+        
+        <navigation-case>
+            <from-outcome>ADMIN_DASHBOARD</from-outcome>
+            <to-view-id>/admins/dashboard.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>ADMIN_USER_TRANSACTIONS</from-outcome>
+            <to-view-id>/admins/userTransactions.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>ADD_ADMIN</from-outcome>
+            <to-view-id>/admins/addAdmin.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+    </navigation-rule>
+    
+    <!-- From admin specific pages -->
+    <navigation-rule>
+        <from-view-id>admins/addAdmin.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{authentication.registerAdmin}</from-action>
+            <to-view-id>/admins/addAdmin.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+        
+         <navigation-case>
+            <from-outcome>ADD_ADMIN_FAILURE</from-outcome>
+            <to-view-id>/admins/addAdmin.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+        
+         <navigation-case>
+            <from-outcome>ADD_ADMIN_SUCCESS</from-outcome>
+            <to-view-id>/admins/addAdmin.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+        
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>admins/userTransactions.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{adminTransactions.seeTransactionsOfUser}</from-action>
+            <to-view-id>/admins/userTransactions.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

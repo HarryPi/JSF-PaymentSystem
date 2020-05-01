@@ -3,8 +3,10 @@ package ejb;
 import Exceptions.EmailAlreadyExistsException;
 import dto.SystemUserDto;
 import entity.SystemUser;
+import java.io.IOException;
 
 import java.util.List;
+import javax.servlet.ServletException;
 
 public interface UserService {
 
@@ -12,6 +14,7 @@ public interface UserService {
      * Registers an administrator
      *
      * @param user Admin to add {@link SystemUserDto}
+     * @throws Exceptions.EmailAlreadyExistsException
      */
     void registerAdmin(SystemUserDto user) throws EmailAlreadyExistsException;;
 
@@ -29,8 +32,9 @@ public interface UserService {
      *
      * @param email
      * @param password
+     * @throws javax.servlet.ServletException
      */
-    void loginUser(String email, String password);
+    void loginUser(String email, String password) throws ServletException;
 
     SystemUserDto getCurrentUser();
 
@@ -65,5 +69,11 @@ public interface UserService {
      * @return
      */
     List<SystemUserDto> getAllAdminUsers();
+    
+    /**
+     *  Logs out the current user
+     * @throws java.io.IOException
+     */
+    void logout() throws IOException;
 
 }

@@ -1,6 +1,7 @@
 package jsf;
 
 import Exceptions.EmailAlreadyExistsException;
+import NavigationConstants.Navigation;
 import dto.SystemUserDto;
 import ejb.CurrencyService;
 import ejb.UserService;
@@ -9,18 +10,18 @@ import entity.SystemUser;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 
@@ -38,6 +39,9 @@ public class AuthBean implements Serializable {
     @Inject
     private LayoutControllerBean layout;
 
+    @Inject
+    private Navigation navigation;
+    
     @EJB
     UserService userService;
 
@@ -72,18 +76,30 @@ public class AuthBean implements Serializable {
     public String login() {
         try {
             this.loginToServer(this.userDto.getUsername(), this.userDto.getUserpassword());
-            System.out.println("Success!");
         } catch (ServletException e) {
             System.out.println("Error :(");
             System.out.println(String.format("Error %s", e.toString()));
-            return "/index.xhtml";
+            return navigation.getLOG_IN_FAILURE();
         }
 
         if (this.userService.isLoggedUserAdmin()) {
-            return "/admins/dashboard?faces-redirect=true";
+            return navigation.getADMIN_SUCCESS();
+        } else {
+            return navigation.getLOG_IN_SUCCESS();
         }
+    }
 
-        return "/users/transactions.xhtml?faces-redirect=true";
+    public String logout() {
+        try {
+            this.userService.logout();
+            layout.ensureSidebarHidden();
+            return navigation.getLOGOUT();
+        } catch (IOException ex) {
+            Logger.getLogger(AuthBean.class.getName()).log(Level.SEVERE, null, ex);
+            layout.displayFacesMessage("Failed to connect to server!", "Something went wrong please try again", FacesMessage.SEVERITY_ERROR);
+            layout.ensureSidebarHidden();
+            return navigation.getLOGOUT();
+        }
     }
 
     public String registerAdmin() {
@@ -99,7 +115,7 @@ public class AuthBean implements Serializable {
                 userService.registerAdmin(user);
             } catch (EmailAlreadyExistsException e) {
                 layout.displayFacesMessage("Failed to register", "Email already exists!", FacesMessage.SEVERITY_ERROR);
-                return null;
+                return navigation.getADD_ADMIN_FAILURE();
 
             }
 
@@ -109,7 +125,7 @@ public class AuthBean implements Serializable {
 
         layout.displayFacesMessage("Sucess", "Admin registered!", FacesMessage.SEVERITY_INFO);
         this.userDto = new SystemUserDto();
-        return null;
+        return navigation.getADD_ADMIN_SUCCESS();
     }
 
     public String register() {
@@ -125,16 +141,23 @@ public class AuthBean implements Serializable {
                 userService.registerUser(user, currency);
             } catch (EmailAlreadyExistsException e) {
                 layout.displayFacesMessage("Failed to register", "Email already exists!", FacesMessage.SEVERITY_ERROR);
-                return null;
+                return navigation.getREGISTER_FAILURE();
 
             }
             this.loginToServer(this.userDto.getUsername(), this.userDto.getUserpassword());
 
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            layout.displayFacesMessage(
+                    "Failed to login after registertion",
+                    "You have been registerd but we where unable to redirect you. Please log in manually",
+                    FacesMessage.SEVERITY_ERROR
+            );
+
+            return navigation.getREGISTER_FAILURE();
+
         }
 
-        return "/users/transactions.xhtml?faces-redirect=true";
+        return navigation.getREGISTER_SUCCESS();
     }
 
     public String getCurrency() {
@@ -182,8 +205,16 @@ public class AuthBean implements Serializable {
     }
 
     private void loginToServer(String username, String password) throws ServletException {
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-        request.login(username, password);
+        this.userService.loginUser(username, password);
     }
+
+    public Navigation getNavigation() {
+        return navigation;
+    }
+
+    public void setNavigation(Navigation navigation) {
+        this.navigation = navigation;
+    }
+    
+    
 }

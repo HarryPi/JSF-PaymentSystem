@@ -5,6 +5,7 @@
  */
 package jsf;
 
+import NavigationConstants.Navigation;
 import dto.SystemTransactionDto;
 import dto.SystemUserDto;
 import ejb.CurrencyService;
@@ -31,6 +32,9 @@ public class AdminTransactionsBean implements Serializable {
     private List<SystemTransactionDto> sentTransactions;
     private String currencySymbol;
     private double balance;
+
+    @Inject
+    Navigation navigation;
 
     @EJB
     UserService userService;

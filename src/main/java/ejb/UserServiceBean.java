@@ -8,6 +8,7 @@ import entity.Account;
 import entity.Currency;
 import entity.SystemUser;
 import entity.SystemUserGroup;
+import java.io.IOException;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -20,9 +21,11 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.faces.context.ExternalContext;
 import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 /**
- * 
+ *
  * @author harry
  */
 @Stateless
@@ -57,14 +60,14 @@ public class UserServiceBean implements UserService {
     @PermitAll
     @Transactional(Transactional.TxType.REQUIRED)
     public void registerUser(SystemUser user, String selectedCurrency) throws EmailAlreadyExistsException {
-        
+
         // Check if email already exists in db
         SystemUser userInDb = userDao.getUserByEmail(user.getUsername()).orElse(null);
-        
+
         if (userInDb != null) {
             throw new EmailAlreadyExistsException("This email already exists");
         }
-        
+
         SystemUserGroup userGroup = new SystemUserGroup(user, user.getUsername(), "users");
 
         double balance = 1000.0;
@@ -84,12 +87,16 @@ public class UserServiceBean implements UserService {
     }
 
     /**
+     * @param username
      * @param email
      * @param password
      */
     @Override
-    public void loginUser(String email, String password) {
-        //todo: remember to transfer login code here
+    @PermitAll
+    public void loginUser(String username, String password) throws ServletException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        request.login(username, password);
     }
 
     /**
@@ -127,15 +134,15 @@ public class UserServiceBean implements UserService {
     @RolesAllowed("admins")
     @Transactional(Transactional.TxType.REQUIRED)
     public void registerAdmin(SystemUserDto user) throws EmailAlreadyExistsException {
-          // Check if email already exists in db
+        // Check if email already exists in db
         SystemUser userInDb = userDao.getUserByEmail(user.getUsername()).orElse(null);
-        
+
         if (userInDb != null) {
             throw new EmailAlreadyExistsException("This email already exists");
         }
-        
+
         SystemUserGroup userGroup = new SystemUserGroup(user.asEntity(), user.getUsername(), "admins");
-        
+
         user.setUserGroup(userGroup);
         userDao.persist(user.asEntity()); // No need to persist account as it is already attached to user
     }
@@ -156,5 +163,11 @@ public class UserServiceBean implements UserService {
     @RolesAllowed("admins")
     public List<SystemUserDto> getAllAdminUsers() {
         return SystemUser.toDto(userDao.getAllAdminUsers());
+    }
+
+    @Override
+    public void logout() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().invalidateSession();
     }
 }

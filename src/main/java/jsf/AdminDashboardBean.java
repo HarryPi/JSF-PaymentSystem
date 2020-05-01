@@ -5,6 +5,7 @@
  */
 package jsf;
 
+import NavigationConstants.Navigation;
 import java.util.List;
 import javax.inject.Named;
 import dto.SystemUserDto;
@@ -12,6 +13,7 @@ import ejb.UserService;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 
 /**
  *
@@ -26,6 +28,9 @@ public class AdminDashboardBean implements Serializable {
     @EJB
     UserService userService;
 
+    @Inject
+    Navigation navigation;
+    
     /**
      * Creates a new instance of AdminDashboardBean
      */

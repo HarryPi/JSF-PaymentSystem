@@ -13,11 +13,14 @@
     <ui:define name="sidebar">
         <p:panelGrid>
             <div class="p-grid p-align-center" style="text-align: center">
-                <p:linkButton outcome="dashboard" value="All users" class="p-col-12 p-col-align-center"/>
-                <p:linkButton outcome="userTransactions" value="See user transactions"
-                              class="p-col-12 p-col-align-center"/>
-                <p:linkButton outcome="addAdmin" value="Add Administrator"
-                              class="p-col-12 p-col-align-center"/>
+                 <h:form>
+                    <p:linkButton outcome="#{nav.ADMIN_DASHBOARD}" value="All users" class="p-col-12 p-col-align-center"/>
+                    <p:linkButton outcome="#{nav.ADMIN_USER_TRANSACTIONS}" value="See user transactions"
+                                  class="p-col-12 p-col-align-center"/>
+                    <p:linkButton outcome="#{nav.ADD_ADMIN}" value="Add Administrator"
+                                  class="p-col-12 p-col-align-center"/>
+                    <p:commandButton value="Log out" action="#{authentication.logout()}" class="p-col-12 p-col-align-center"/>
+                </h:form>
             </div>
         </p:panelGrid>
     </ui:define>

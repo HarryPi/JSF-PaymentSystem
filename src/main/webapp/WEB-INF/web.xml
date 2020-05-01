@@ -42,6 +42,7 @@
 	</security-role>
 
 	<!--Constraints-->
+       
 	<security-constraint>
 		<display-name>ForUsers</display-name>
 		<web-resource-collection>
@@ -80,7 +81,6 @@
 			<form-error-page>/index.xhtml</form-error-page>
 		</form-login-config>
 	</login-config>
-
 	<!--Mime mappings-->
 	<mime-mapping>
 		<extension>eot</extension>

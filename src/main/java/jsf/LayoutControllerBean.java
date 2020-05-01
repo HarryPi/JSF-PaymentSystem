@@ -1,8 +1,10 @@
 package jsf;
 
+import NavigationConstants.Navigation;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 @Named(value = "layout")
@@ -11,6 +13,9 @@ public class LayoutControllerBean {
     private boolean shouldShowSidebar = false;
     private boolean isLoading = false;
     private String balanceDisplay;
+    
+    @Inject
+    Navigation navigation;
     
     public LayoutControllerBean() {
     }
@@ -45,6 +50,14 @@ public class LayoutControllerBean {
 
     public void setShouldShowSidebar(boolean shouldShowSidebar) {
         this.shouldShowSidebar = shouldShowSidebar;
+    }
+
+    public Navigation getNavigation() {
+        return navigation;
+    }
+
+    public void setNavigation(Navigation navigation) {
+        this.navigation = navigation;
     }
 
 }

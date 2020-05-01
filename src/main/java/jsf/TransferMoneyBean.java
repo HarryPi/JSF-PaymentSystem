@@ -1,5 +1,6 @@
 package jsf;
 
+import NavigationConstants.Navigation;
 import dto.SystemUserDto;
 import ejb.CurrencyService;
 import ejb.PaymentService;
@@ -37,6 +38,9 @@ public class TransferMoneyBean implements Serializable {
 
     @Inject
     LayoutControllerBean layout;
+    
+    @Inject
+    Navigation navigation; 
 
     public TransferMoneyBean() {
     }

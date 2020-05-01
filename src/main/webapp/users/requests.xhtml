@@ -6,7 +6,6 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <f:metadata>
         <f:event type="preValidate" listener="#{layout.showSidebar()}"/>
-        <f:event type="preValidate" listener="#{transferRequestsBean.loadAllRequests()}"/>
     </f:metadata>
     <ui:define name="sidebar">
         <h:form>
@@ -16,6 +15,11 @@
             <p:remoteCommand action="#{layout.setLoading(true)}"
                              name="setLoadingTrue"
                              update="progressBarIndeterminate"/>
+            <p:remoteCommand actionListener="#{transferRequestsBean.loadAllRequests()}"
+                             autoRun="true"
+                             update="progressBarIndeterminate, requestForm"
+                             oncomplete="setLoadingFalse()"
+                             />
         </h:form>
         <p:panelGrid>
             <div class="p-grid p-align-center" style="text-align: center">

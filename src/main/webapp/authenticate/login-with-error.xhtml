@@ -10,11 +10,13 @@
             <f:event type="preRenderView" listener="#{authentication.checkIfAuthenticated}"/>
         </f:metadata>
         <h3>Please log in</h3>
-        <h:form>
+        <h:form class="ui-g">
             <p:messages closable="true" showDetail="true" id="loginErrorMsg" >
                 <p:autoUpdate />
-               
             </p:messages>
+            <div class="ui-g-12">
+                <p:staticMessage severity="error" summary="Failed to log in!" detail="Wrong username or password please try again" />
+            </div>
         </h:form>
         <p:separator />
         <h:form>
@@ -30,7 +32,7 @@
 
                 <div class="ui-g-12">
                     <p:outputLabel class="ui-g-2" for="password" value="Password"/>
-                    <p:inputText class="ui-g-4" type="password" required="true" id="password" value="#{authentication.userDto.userpassword}"/>
+                    <p:inputText type="password" class="ui-g-4" required="true" id="password" value="#{authentication.userDto.userpassword}"/>
                     <p:message style="margin-left: 2%" class="ui-g-4" for="password" />
                 </div>
 

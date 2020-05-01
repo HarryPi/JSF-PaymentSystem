@@ -66,7 +66,7 @@
         <navigation-case>
             <from-action>#{authentication.login}</from-action>
             <from-outcome>LOG_IN_FAILURE</from-outcome>
-            <to-view-id>/login.xhtml</to-view-id>
+            <to-view-id>/authenticate/login-with-error.xhtml</to-view-id>
             <redirect></redirect>
         </navigation-case>
         

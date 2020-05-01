@@ -31,7 +31,7 @@ public class SystemTransaction implements Serializable {
      * The account that owns this transaction (i.e the instigator)
      */
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private SystemUser transactionOwner;
 
     /**

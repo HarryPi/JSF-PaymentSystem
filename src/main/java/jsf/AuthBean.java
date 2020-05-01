@@ -32,7 +32,8 @@ public class AuthBean implements Serializable {
     private String currency;
     private List<Currency> currencies;
     private SystemUserDto userDto;
-
+    private String errorMsg;
+    
     @Inject
     private CurrencyService currencyService;
 
@@ -77,8 +78,7 @@ public class AuthBean implements Serializable {
         try {
             this.loginToServer(this.userDto.getUsername(), this.userDto.getUserpassword());
         } catch (ServletException e) {
-            System.out.println("Error :(");
-            System.out.println(String.format("Error %s", e.toString()));
+            this.errorMsg = "Invalid username or password";
             return navigation.getLOG_IN_FAILURE();
         }
 
@@ -205,7 +205,11 @@ public class AuthBean implements Serializable {
     }
 
     private void loginToServer(String username, String password) throws ServletException {
-        this.userService.loginUser(username, password);
+        try {
+            this.userService.loginUser(username, password);
+        } catch (ServletException e) {
+            throw e;
+        }
     }
 
     public Navigation getNavigation() {
@@ -214,6 +218,14 @@ public class AuthBean implements Serializable {
 
     public void setNavigation(Navigation navigation) {
         this.navigation = navigation;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
     }
     
     

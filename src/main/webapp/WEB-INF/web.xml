@@ -78,7 +78,7 @@
 		<realm-name>WebappsRealm</realm-name>
 		<form-login-config>
 			<form-login-page>/authenticate/login.xhtml</form-login-page>
-			<form-error-page>/index.xhtml</form-error-page>
+			<form-error-page>/authenticate/login-with-error.xhtml</form-error-page> 
 		</form-login-config>
 	</login-config>
 	<!--Mime mappings-->

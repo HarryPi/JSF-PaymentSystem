@@ -17,14 +17,14 @@ public class SystemTransactionDto {
     /**
      * The account that owns this transaction (i.e the instigator)
      */
-    private SystemUserDto transactionOwner;
+    private SystemUser transactionOwner;
 
     /**
      * The other participant of this transaction that either receives or sends money from the transaction owner
      */
     private long transactionParticipantId;
 
-    private SystemUserDto transactionParticipant;
+    private SystemUser transactionParticipant;
 
     public SystemTransactionDto() {
     }
@@ -32,7 +32,7 @@ public class SystemTransactionDto {
     public SystemTransactionDto(
             @NotNull double amount,
             @NotNull TransactionStatus status,
-            @NotNull SystemUserDto transactionOwner,
+            @NotNull SystemUser transactionOwner,
             @NotNull long transactionParticipantId
     ) {
         this.amount = amount;
@@ -45,9 +45,9 @@ public class SystemTransactionDto {
             long id,
             @NotNull double amount,
             @NotNull TransactionStatus status,
-            SystemUserDto transactionOwner,
+            SystemUser transactionOwner,
             @NotNull long transactionParticipantId,
-            @NotNull SystemUserDto transactionParticipant
+            @NotNull SystemUser transactionParticipant
     ) {
         this.id = id;
         this.amount = amount;
@@ -61,7 +61,7 @@ public class SystemTransactionDto {
             long id,
             double amount,
             TransactionStatus status,
-            SystemUserDto toDto,
+            SystemUser toDto,
             long transactionParticipantId
     ) {
         this.id = id;
@@ -76,7 +76,7 @@ public class SystemTransactionDto {
         transaction.setId(this.id);
         transaction.setAmount(this.amount);
         transaction.setStatus(this.status);
-        transaction.setTransactionOwner(this.transactionOwner.asEntity());
+        transaction.setTransactionOwner(this.transactionOwner);
         transaction.setTransactionParticipantId(this.transactionParticipantId);
         transaction.setPreConversionAmount(this.preConversionAmount);
 
@@ -107,11 +107,11 @@ public class SystemTransactionDto {
         this.status = status;
     }
 
-    public SystemUserDto getTransactionOwner() {
+    public SystemUser getTransactionOwner() {
         return transactionOwner;
     }
 
-    public void setTransactionOwner(SystemUserDto transactionOwner) {
+    public void setTransactionOwner(SystemUser transactionOwner) {
         this.transactionOwner = transactionOwner;
     }
 
@@ -123,11 +123,11 @@ public class SystemTransactionDto {
         this.transactionParticipantId = transactionParticipantId;
     }
 
-    public SystemUserDto getTransactionParticipant() {
+    public SystemUser getTransactionParticipant() {
         return transactionParticipant;
     }
 
-    public void setTransactionParticipant(SystemUserDto transactionParticipant) {
+    public void setTransactionParticipant(SystemUser transactionParticipant) {
         this.transactionParticipant = transactionParticipant;
     }
 

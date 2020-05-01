@@ -1,7 +1,7 @@
 package entity;
 
-
 import dto.SystemUserDto;
+import java.io.Serializable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -10,10 +10,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class SystemUser {
+@SequenceGenerator(name = "usr", initialValue = 1000) // This is done to avoid clashing with the already inserted users 
+public class SystemUser implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usr")
     private Long id;
 
     @NotNull
@@ -39,6 +40,12 @@ public class SystemUser {
     )
     private List<SystemTransaction> systemTransactions;
 
+    @OneToOne(mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private SystemUserGroup userGroup;
+
     /**
      * The User of the system
      */
@@ -48,39 +55,47 @@ public class SystemUser {
     /**
      * The user of the system
      *
-     * @param username     The user email
+     * @param username The user email
      * @param userpassword Password
-     * @param name         Users first name
-     * @param surname      Users last name
-     * @param account      Users active {@link Account} only one can exist
+     * @param name Users first name
+     * @param surname Users last name
+     * @param account Users active {@link Account} only one can exist
+     * @param userGroup Group in which user belongs
      */
     public SystemUser(
-            @NotNull String username,
-            @NotNull String userpassword,
-            @NotNull String name,
-            @NotNull String surname,
-            Account account
+            String username,
+            String userpassword,
+            String name,
+            String surname,
+            Account account,
+            SystemUserGroup userGroup
     ) {
         this.username = username;
         this.userpassword = userpassword;
         this.name = name;
         this.surname = surname;
         this.account = account;
+        this.userGroup = userGroup;
     }
 
     public SystemUserDto toDto() {
+        
         return new SystemUserDto(
                 this.id,
                 this.username,
                 this.userpassword,
                 this.name,
                 this.surname,
-                this.account,
-                this.systemTransactions
+                this.account == null ? null : this.account.asDto(),
+                SystemTransaction.asDto(this.systemTransactions),
+                this.userGroup
         );
     }
 
     public static List<SystemUserDto> toDto(List<SystemUser> users) {
+        if (users.isEmpty()) {
+            return null;
+        }
         List<SystemUserDto> userDtos = new ArrayList<>();
 
         for (SystemUser user : users) {
@@ -144,6 +159,14 @@ public class SystemUser {
 
     public void setSystemTransactions(List<SystemTransaction> systemTransactions) {
         this.systemTransactions = systemTransactions;
+    }
+
+    public SystemUserGroup getUserGroup() {
+        return userGroup;
+    }
+
+    public void setUserGroup(SystemUserGroup userGroup) {
+        this.userGroup = userGroup;
     }
 
     @Override

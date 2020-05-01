@@ -11,7 +11,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 
-@Named
+@Named("currency")
 @ApplicationScoped
 public class CurrencyServiceBean implements CurrencyService {
 

@@ -3,8 +3,10 @@ package dto;
 import entity.Account;
 import entity.SystemTransaction;
 import entity.SystemUser;
+import entity.SystemUserGroup;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,13 +16,22 @@ public class SystemUserDto implements Serializable {
     private String userpassword;
     private String name;
     private String surname;
-    private Account account;
-    private List<SystemTransaction> transactions;
-
+    private AccountDto account;
+    private List<SystemTransactionDto> transactions;
+    private SystemUserGroup userGroup;
+    
     public SystemUserDto() {
     }
 
-    public SystemUserDto(Long id, String username, String userpassword, String name, String surname, Account account, List<SystemTransaction> transactions) {
+    public SystemUserDto(
+            Long id,
+            String username,
+            String userpassword,
+            String name,
+            String surname,
+            AccountDto account,
+            List<SystemTransactionDto> transactions,
+            SystemUserGroup userGrop) {
         this.id = id;
         this.username = username;
         this.userpassword = userpassword;
@@ -28,7 +39,10 @@ public class SystemUserDto implements Serializable {
         this.surname = surname;
         this.account = account;
         this.transactions = transactions;
+        this.userGroup = userGrop;
     }
+
+   
 
     public SystemUser asEntity() {
         SystemUser user = new SystemUser();
@@ -37,8 +51,8 @@ public class SystemUserDto implements Serializable {
         user.setUserpassword(this.userpassword);
         user.setName(this.name);
         user.setSurname(this.surname);
-        user.setAccount(this.account);
-        user.setSystemTransactions(this.transactions);
+        user.setAccount(this.account != null ? this.account.asEntity() : null);
+        user.setSystemTransactions(SystemTransaction.asEntity(this.transactions != null ? this.transactions : new ArrayList<>()));
 
         return user;
     }
@@ -83,19 +97,19 @@ public class SystemUserDto implements Serializable {
         this.surname = surname;
     }
 
-    public Account getAccount() {
+    public AccountDto getAccount() {
         return account;
     }
 
-    public void setAccount(Account account) {
+    public void setAccount(AccountDto account) {
         this.account = account;
     }
 
-    public List<SystemTransaction> getTransactions() {
+    public List<SystemTransactionDto> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(List<SystemTransaction> transactions) {
+    public void setTransactions(List<SystemTransactionDto> transactions) {
         this.transactions = transactions;
     }
 
@@ -112,6 +126,14 @@ public class SystemUserDto implements Serializable {
         final SystemUserDto dtoToCompare = (SystemUserDto) obj;
 
         return dtoToCompare.id.equals(this.id);
+    }
+
+    public SystemUserGroup getUserGroup() {
+        return userGroup;
+    }
+
+    public void setUserGroup(SystemUserGroup userGroup) {
+        this.userGroup = userGroup;
     }
 
     @Override

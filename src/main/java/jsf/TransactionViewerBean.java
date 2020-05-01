@@ -55,10 +55,10 @@ public class TransactionViewerBean implements Serializable {
         SystemUserDto currentUser = this.userService.getCurrentUser();
 
         this.receivedTransactions = transactionService.getAllReceivedTransactions(currentUser.getId());
-        this.receivedTransactions.forEach(t -> t.setTransactionParticipant(userService.findUser(t.getTransactionParticipantId())));
+        this.receivedTransactions.forEach(t -> t.setTransactionParticipant(userService.findUser(t.getTransactionParticipantId()).asEntity()));
 
         this.sentTransactions = transactionService.getAllSentTransactions(currentUser.getId());
-        this.sentTransactions.forEach(t -> t.setTransactionParticipant(userService.findUser(t.getTransactionParticipantId())));
+        this.sentTransactions.forEach(t -> t.setTransactionParticipant(userService.findUser(t.getTransactionParticipantId()).asEntity()));
 
         this.currencySymbol = this.currencyService.get(currentUser.getAccount().getCurrency()).getDisplaySymbol();
         this.noOfPendingRequests = this.transactionService.getNoOfPendingRequestedTransactions(currentUser.getId());

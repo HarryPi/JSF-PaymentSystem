@@ -4,10 +4,10 @@ import dto.SystemTransactionDto;
 import ejb.TransactionStatus;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.NotNull;
 
 @NamedQuery(
         name = "getAllTransactionsWithUserId",
@@ -78,7 +78,7 @@ public class SystemTransaction implements Serializable {
                 this.id,
                 this.amount,
                 this.status,
-                this.transactionOwner.toDto(),
+                this.transactionOwner,
                 this.transactionParticipantId
         );
         t.setPreConversionAmount(this.preConversionAmount);
@@ -86,6 +86,9 @@ public class SystemTransaction implements Serializable {
     }
 
     public static List<SystemTransactionDto> asDto(List<SystemTransaction> transactions) {
+        if (transactions.isEmpty()) {
+            return null;
+        }
         List<SystemTransactionDto> dtos = new ArrayList<>();
 
         for (SystemTransaction transaction : transactions) {
@@ -93,6 +96,16 @@ public class SystemTransaction implements Serializable {
         }
 
         return dtos;
+    }
+
+    public static List<SystemTransaction> asEntity(List<SystemTransactionDto> transactions) {
+        List<SystemTransaction> entities = new ArrayList<>();
+
+        for (SystemTransactionDto transaction : transactions) {
+            entities.add(transaction.asEntity());
+        }
+
+        return entities;
     }
 
     public long getId() {

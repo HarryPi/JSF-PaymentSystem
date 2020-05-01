@@ -50,7 +50,7 @@ public class TransactionServiceBean implements TransactionService {
                 .map(t -> {
                     SystemTransactionDto dto = t.asDto();
                     SystemUserDto user = userService.findUser(t.getTransactionParticipantId());
-                    dto.setTransactionParticipant(user);
+                    dto.setTransactionParticipant(user.asEntity());
                     return dto;
                 })
                 .collect(Collectors.toList());
@@ -69,7 +69,7 @@ public class TransactionServiceBean implements TransactionService {
     @Override
     public void approveTransactionRequest(List<SystemTransactionDto> transactions) {
         transactions.forEach(transaction -> {
-            SystemUserDto receiveUser = transaction.getTransactionOwner();
+            SystemUserDto receiveUser = transaction.getTransactionOwner().toDto();
             SystemUserDto sendUser = userService.findUser(transaction.getTransactionParticipantId());
 
             paymentService.pay(sendUser.getUsername(), receiveUser.getUsername(), transaction.getAmount());

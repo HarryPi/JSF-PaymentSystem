@@ -1,29 +1,47 @@
 package entity;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Objects;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
 
 @Entity
-public class SystemUserGroup {
+@SequenceGenerator(name = "usr_grp", initialValue = 500)
+public class SystemUserGroup implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usr_grp")
     private Long id;
 
+    @NotNull
+    @OneToOne
+    private SystemUser user;
     private String username;
     private String groupname;
 
     public SystemUserGroup() {
     }
 
-    public SystemUserGroup(String username, String groupname) {
+    /**
+     * Create system user
+     * @param user
+     * @param username
+     * @param groupname 
+     */
+    public SystemUserGroup(SystemUser user, String username, String groupname) {
+        this.user = user;
         this.username = username;
         this.groupname = groupname;
     }
 
+  
+
+    
     public Long getId() {
         return id;
     }

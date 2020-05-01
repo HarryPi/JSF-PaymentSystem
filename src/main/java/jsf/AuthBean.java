@@ -1,5 +1,6 @@
 package jsf;
 
+import Exceptions.EmailAlreadyExistsException;
 import dto.SystemUserDto;
 import ejb.CurrencyService;
 import ejb.UserService;
@@ -20,10 +21,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import javax.faces.annotation.ManagedProperty;
+import javax.faces.application.FacesMessage;
 
 @Named("authentication")
 @SessionScoped
 public class AuthBean implements Serializable {
+
     private String currency;
     private List<Currency> currencies;
     private SystemUserDto userDto;
@@ -31,8 +35,11 @@ public class AuthBean implements Serializable {
     @Inject
     private CurrencyService currencyService;
 
+    @Inject
+    private LayoutControllerBean layout;
+
     @EJB
-    UserService store;
+    UserService userService;
 
     public AuthBean() {
         this.userDto = new SystemUserDto();
@@ -71,6 +78,11 @@ public class AuthBean implements Serializable {
             System.out.println(String.format("Error %s", e.toString()));
             return "/index.xhtml";
         }
+
+        if (this.userService.isLoggedUserAdmin()) {
+            return "/admins/dashboard?faces-redirect=true";
+        }
+
         return "/users/transactions.xhtml?faces-redirect=true";
     }
 
@@ -83,8 +95,13 @@ public class AuthBean implements Serializable {
             SystemUser user = this.userDto.asEntity();
             user.setUserpassword(hashedPassword);
 
-            
-            store.registerUser(user, currency);
+            try {
+                userService.registerUser(user, currency);
+            } catch (EmailAlreadyExistsException e) {
+                layout.displayFacesMessage("Failed to register", "Email already exists!", FacesMessage.SEVERITY_ERROR);
+                return null;
+
+            }
             this.loginToServer(this.userDto.getUsername(), this.userDto.getUserpassword());
 
         } catch (Exception ex) {
@@ -132,7 +149,9 @@ public class AuthBean implements Serializable {
      */
     private static String bytesToHex(byte[] bytes) {
         StringBuffer result = new StringBuffer();
-        for (byte b : bytes) result.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+        for (byte b : bytes) {
+            result.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+        }
         return result.toString();
     }
 

@@ -1,0 +1,73 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <f:metadata>
+        <f:event type="preRenderComponent" listener="#{layout.showSidebar()}"/>
+        <f:event type="postAddToView" listener="#{layout.setLoading(true)}"/>
+    </f:metadata>
+
+
+    <ui:define name="sidebar">
+        <p:panelGrid>
+            <div class="p-grid p-align-center" style="text-align: center">
+                <p:linkButton outcome="dashboard" value="All users" class="p-col-12 p-col-align-center"/>
+                <p:linkButton outcome="userTransactions" value="See user transactions"
+                              class="p-col-12 p-col-align-center"/>
+<!--                <p:linkButton outcome="addAdmin" value="Add Administrator"
+                              class="p-col-12 p-col-align-center"/>-->
+            </div>
+        </p:panelGrid>
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+
+            <p:remoteCommand action="#{layout.setLoading(false)}"
+                             name="setLoadingFalse"
+                             update="progressBarIndeterminate"/>
+            <p:remoteCommand actionListener="#{dashboard.onLoad()}"
+                             autoRun="true"
+                             update="allUsersTable"
+                             oncomplete="setLoadingFalse()"
+                             />
+        </h:form>
+
+        <p:fragment>
+            <p:autoUpdate/>
+            <div class="p-grid">
+                <div class="p-col-12">
+                    <h3>All users</h3>
+                    <p:progressBar rendered="#{layout.loading}" id="progressBarIndeterminate" style="height:6px;"
+                                   mode="indeterminate">
+                    </p:progressBar>
+                </div>
+                <p:outputPanel styleClass="p-col-12" id="allUsersTable" style="text-align: center;">
+                    <p:dataTable styleClass="p-col-10 p-offset-1" id="receivedTransactionsDataTable"
+                                 var="user"
+                                 value="#{dashboard.allUsers}"
+                                 rows="10"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                 rowsPerPageTemplate="5,10,15"
+                                 >
+                        <p:column headerText="Email">
+                            <h:outputText value="#{user.username}" />
+                        </p:column>
+
+                        <p:column headerText="Balance">
+                            <h:outputText rendered="#{user.account.balance != null}" value="#{currency.get(user.account.currency).displaySymbol}#{user.account.balance}"/>
+                            <h:outputText rendered="#{user.account.balance == null}" value="Admin Account"/>
+                        </p:column>
+                        
+                        <p:column headerText="Full name">
+                            <h:outputText value="#{user.name} #{user.surname}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:outputPanel>
+            </div>
+        </p:fragment>
+    </ui:define>
+</ui:composition>

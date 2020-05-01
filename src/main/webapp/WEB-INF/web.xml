@@ -51,6 +51,7 @@
 		<auth-constraint>
 			<description/>
 			<role-name>users</role-name>
+			<role-name>admins</role-name>
 		</auth-constraint>
 		<user-data-constraint>
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>

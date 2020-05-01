@@ -71,7 +71,7 @@ public class TransferMoneyBean implements Serializable {
         System.out.println("loading all users...");
 
         // Get all users
-        users = new ArrayList<>(userService.getAllUsers());
+        users = new ArrayList<>(userService.getAllSimpleUsers());
 
         // Get current users email
         String currentUsersEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();

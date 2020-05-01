@@ -41,8 +41,8 @@ public class PaymentServiceBean implements PaymentService {
     @Override
     @Transactional(Transactional.TxType.REQUIRED)
     public boolean pay(String from, String to, double amount) {
-        SystemUser userFrom = userDao.getUserByEmail(from);
-        SystemUser userTo = userDao.getUserByEmail(to);
+        SystemUser userFrom = userDao.getUserByEmail(from).get();
+        SystemUser userTo = userDao.getUserByEmail(to).get();
 
         boolean canTransferComplete = userFrom.getAccount().getBalance() - amount >= 0;
 
@@ -65,8 +65,8 @@ public class PaymentServiceBean implements PaymentService {
 
     @Override
     public void requestMoney(String from, String to, double amount) {
-        SystemUser userTo = userDao.getUserByEmail(to);
-        SystemUser userFrom = userDao.getUserByEmail(from);
+        SystemUser userTo = userDao.getUserByEmail(to).get();
+        SystemUser userFrom = userDao.getUserByEmail(from).get();
 
         double convertAmount = this.currencyService.convertToCurrency(userFrom.getAccount().getCurrency(), userTo.getAccount().getCurrency(), amount);
         // Create Transaction to reflect payment

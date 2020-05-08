@@ -14,11 +14,9 @@
         <Node id="admins/dashboard.xhtml" x="820" y="256" zoom="false"/>
         <Node id="*" x="443" y="46" zoom="true"/>
         <Node id="authenticate/register.xhtml" x="234" y="173" zoom="true"/>
-        <Node id="login.xhtml" x="1048" y="185" zoom="true"/>
         <Node id="users/transferPage.xhtml" x="400" y="450" zoom="true"/>
         <Node id="users/transactions.xhtml" x="573" y="192" zoom="true"/>
         <Node id="users/*" x="400" y="150" zoom="true"/>
-        <Node id="dummy/result.xhtml" x="150" y="600" zoom="true"/>
         <Node id="authenticate/login.xhtml" x="803" y="101" zoom="true"/>
         <Node id="admins/userTransactions.xhtml" x="86" y="433" zoom="true"/>
         <Node id="users/requests.xhtml" x="771" y="567" zoom="false"/>
